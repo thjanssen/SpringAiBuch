@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: Exp_Audio
+
+  ai:
+#    ollama:
+#      chat:
+#        model: gemma3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+      audio:
+        speech:
+          options:
+            voice: echo
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai: DEBUG
+          web: DEBUG
+
+server:
+  error:
+    include-message: always

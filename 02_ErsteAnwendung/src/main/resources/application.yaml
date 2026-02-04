@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: 02_ErsteAnwendung
+
+  ai:
+    ollama:
+      chat:
+        model: gemma3
+#    openai:
+#      api-key: ${MyVerySecretChatGptKey}
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG

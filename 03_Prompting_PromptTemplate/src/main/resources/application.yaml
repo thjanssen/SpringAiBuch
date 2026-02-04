@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: 01_Prompt
+
+  ai:
+#    ollama:
+#      chat:
+#        model: gemma3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+
+  # Docker-based models using OpenAI API
+#    openai:
+#      api-key: ignored
+#      base-url: http://localhost:12434/engines
+#      chat:
+#        options:
+#          model: ai/gemma3
+
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG

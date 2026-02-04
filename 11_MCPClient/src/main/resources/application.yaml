@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: 10_MCPClient
+
+  ai:
+    ollama:
+      chat:
+        model: qwen3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+    mcp:
+      client:
+        sse:
+          connections:
+            server1:
+              url: http://localhost:7070
+#        stdio:
+#          root-change-notification: true
+#          connections:
+#            server1:
+#              command: ../08_MCPServer
+#              args:
+#                - --port=7070
+#                - --mode=production
+
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai: DEBUG
+          web: DEBUG
+
+
+server:
+  error:
+    include-message: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
