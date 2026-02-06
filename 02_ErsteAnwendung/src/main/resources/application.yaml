@@ -6,7 +6,9 @@ spring:
     ollama:
       chat:
         model: gemma3
-#    openai:
+      init:
+        pull-model-strategy: when_missing
+  #    openai:
 #      api-key: ${MyVerySecretChatGptKey}
 
   mvc:
