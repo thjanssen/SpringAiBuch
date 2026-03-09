@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: 04_Test_Testcontainers
+
+  ai:
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG

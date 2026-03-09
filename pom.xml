@@ -87,6 +87,8 @@
         <module>03_Prompting_PromptTemplate</module>
         <module>03_Prompting_StructuredOutput</module>
         <module>04_Test</module>
+        <module>04_Test_TestcontainersOllama</module>
+        <module>04_Test_TestcontainersDockerModelRunner</module>
         <module>05_MultiModality_Audio</module>
         <module>05_MultiModality_Image</module>
         <module>07_Advisors</module>

@@ -14,16 +14,17 @@ import org.springframework.ai.evaluation.EvaluationRequest;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
-import org.springframework.ai.ollama.management.ModelManagementOptions;
-import org.springframework.ai.ollama.management.PullModelStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.testcontainers.ollama.OllamaContainer;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 @SpringBootTest
+@Import(TestcontainersConfiguration.class)
 class SpringAiTests {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
@@ -34,13 +35,17 @@ class SpringAiTests {
     @Autowired
     private ChatClient.Builder chatClientBuilder;
 
+    @Autowired
+    @Qualifier("bespokeContainer")
+    private OllamaContainer ollamaContainer;
+
 	@Test
 	void testRelevancy() {
-        var question = "How many kg are in a metric ton?";
+        var question = "Tell me something about the solar system";
         var response = chatController.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
-        var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
+        var evaluator = new RelevancyEvaluator(chatClientBuilder);
         var evalRequest = new EvaluationRequest(question, response);
         var evalResponse = evaluator.evaluate(evalRequest);
 
@@ -54,12 +59,9 @@ class SpringAiTests {
         var response = chatController.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
-        OllamaApi ollamaApi = OllamaApi.builder().build();
-        ChatModel chatModel = OllamaChatModel.builder()
+        var ollamaApi = OllamaApi.builder().baseUrl(ollamaContainer.getEndpoint()).build();
+        var chatModel = OllamaChatModel.builder()
                 .ollamaApi(ollamaApi)
-                .modelManagementOptions(ModelManagementOptions.builder()
-                                        .pullModelStrategy(PullModelStrategy.WHEN_MISSING)
-                                        .build())
                 .defaultOptions(OllamaChatOptions.builder()
                                 .model("bespoke-minicheck")
                                 .temperature(0.0d)
