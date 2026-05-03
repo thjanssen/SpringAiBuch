@@ -8,7 +8,6 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-    <groupId>com.thorben.janssen.spring.ai.buch</groupId>
     <artifactId>02_ErsteAnwendung</artifactId>
     <name>02_ErsteAnwendung</name>
     <description>Demo project for Spring AI</description>

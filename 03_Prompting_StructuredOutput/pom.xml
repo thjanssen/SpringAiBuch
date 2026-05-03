@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-	<artifactId>03_Prompting_Rollen</artifactId>
+	<artifactId>03_Prompting_StructuredOutput</artifactId>
 	<name>03_Prompting_StructuredOutput</name>
     <description>Demo project for Spring AI</description>
 

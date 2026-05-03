@@ -3,13 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.thorben.janssen.spring.ai</groupId>
+        <groupId>com.thorben.janssen.spring.ai.buch</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-	<artifactId>10_MCPClient</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>10_MCPClient</name>
+	<artifactId>11_MCPClient</artifactId>
+	<name>11_MCPClient</name>
 	<description>Backend demo project for Spring AI</description>
     <dependencies>
         <dependency>
