@@ -19,11 +19,12 @@ class PromptTests {
 
 	@Test
 	void test() {
-        var question = "Can Spring AI stream the model's response?";
+        var question = "Name 3 important interfaces Spring AI.";
         var response = chatController.chat(question).collect(Collectors.joining()).block();
         logger.info(response);
 
         Assertions.assertNotNull(response);
         Assertions.assertFalse(response.isEmpty());
     }
+
 }

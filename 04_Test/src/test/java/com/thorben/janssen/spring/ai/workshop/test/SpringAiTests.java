@@ -10,6 +10,7 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.evaluation.FactCheckingEvaluator;
 import org.springframework.ai.chat.evaluation.RelevancyEvaluator;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.evaluation.EvaluationRequest;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -40,9 +42,12 @@ class SpringAiTests {
         var response = chatController.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
-        var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
-        var evalRequest = new EvaluationRequest(question, response);
-        var evalResponse = evaluator.evaluate(evalRequest);
+var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
+var documents = List.of(
+        new Document("A metric ton, also known as a tonne, is equal to 1,000 kilograms.")
+);
+var evalRequest = new EvaluationRequest(question, documents, response);
+var evalResponse = evaluator.evaluate(evalRequest);
 
         logger.info(evalResponse.toString());
         Assertions.assertTrue(evalResponse.isPass());
@@ -69,7 +74,10 @@ class SpringAiTests {
         var chatClientBuilder = ChatClient.builder(chatModel)
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build());
         var evaluator = FactCheckingEvaluator.builder(chatClientBuilder).build();
-        var evalRequest = new EvaluationRequest(Collections.emptyList(), response);
+        var documents = List.of(
+                new Document("A metric ton, also known as a tonne, is equal to 1,000 kilograms.")
+        );
+        var evalRequest = new EvaluationRequest(documents, response);
         var evalResponse = evaluator.evaluate(evalRequest);
 
         logger.info(evalResponse.toString());

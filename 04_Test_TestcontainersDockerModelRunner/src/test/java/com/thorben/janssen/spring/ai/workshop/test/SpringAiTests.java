@@ -45,7 +45,10 @@ class SpringAiTests {
         logger.info("LLM Response: "+response);
 
         var evaluator = new RelevancyEvaluator(chatClientBuilder);
-        var evalRequest = new EvaluationRequest(question, response);
+        var documents = List.of(
+                new Document("A metric ton, also known as a tonne, is equal to 1,000 kilograms.")
+        );
+        var evalRequest = new EvaluationRequest(documents, response);
         var evalResponse = evaluator.evaluate(evalRequest);
 
         logger.info(evalResponse.toString());
