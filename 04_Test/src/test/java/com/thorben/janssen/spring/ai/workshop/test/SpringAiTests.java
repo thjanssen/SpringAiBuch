@@ -42,12 +42,12 @@ class SpringAiTests {
         var response = chatController.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
-var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
-var documents = List.of(
-        new Document("A metric ton, also known as a tonne, is equal to 1,000 kilograms.")
-);
-var evalRequest = new EvaluationRequest(question, documents, response);
-var evalResponse = evaluator.evaluate(evalRequest);
+        var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
+        var documents = List.of(
+                new Document("A metric ton, also known as a tonne, is equal to 1,000 kilograms.")
+        );
+        var evalRequest = new EvaluationRequest(question, documents, response);
+        var evalResponse = evaluator.evaluate(evalRequest);
 
         logger.info(evalResponse.toString());
         Assertions.assertTrue(evalResponse.isPass());
