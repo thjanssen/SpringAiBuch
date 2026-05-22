@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 import java.util.Map;
 
-public class ModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
+public class InputModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
 
     private static final String DEFAULT_MODERATION_MESSAGE = "Your request was blocked by moderation.";
 
@@ -23,7 +23,7 @@ public class ModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
 
     private final ModerationModel moderationModel;
 
-    public ModerationGuardrailAdvisor(String moderationMessage, ModerationModel moderationModel) {
+    public InputModerationGuardrailAdvisor(String moderationMessage, ModerationModel moderationModel) {
         this.moderationMessage = moderationMessage;
         this.moderationModel = moderationModel;
     }
@@ -39,10 +39,6 @@ public class ModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
         return callAdvisorChain.nextCall(chatClientRequest);
     }
 
-    private ModerationResponse moderate(ChatClientRequest chatClientRequest) {
-        return this.moderationModel.call(new ModerationPrompt(chatClientRequest.prompt().getContents()));
-    }
-
     @Override
     public Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain) {
         ModerationResponse moderationResponse = moderate(chatClientRequest);
@@ -52,6 +48,10 @@ public class ModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
             }
         }
         return streamAdvisorChain.nextStream(chatClientRequest);
+    }
+
+    private ModerationResponse moderate(ChatClientRequest chatClientRequest) {
+        return this.moderationModel.call(new ModerationPrompt(chatClientRequest.prompt().getContents()));
     }
 
     @Override
@@ -91,8 +91,8 @@ public class ModerationGuardrailAdvisor implements CallAdvisor, StreamAdvisor {
             return this;
         }
 
-        public ModerationGuardrailAdvisor build() {
-            return new ModerationGuardrailAdvisor(this.moderationMessage, this.moderationModel);
+        public InputModerationGuardrailAdvisor build() {
+            return new InputModerationGuardrailAdvisor(this.moderationMessage, this.moderationModel);
         }
     }
 }

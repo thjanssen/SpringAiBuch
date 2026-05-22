@@ -1,7 +1,5 @@
 package com.thorben.janssen.spring.ai.workshop.advisors;
 
-import com.thorben.janssen.spring.ai.workshop.advisors.advisor.CanaryGuardrailAdvisor;
-import com.thorben.janssen.spring.ai.workshop.advisors.advisor.ModerationGuardrailAdvisor;
 import com.thorben.janssen.spring.ai.workshop.advisors.rest.ChatController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiModerationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class AdvisorTests {
@@ -27,40 +27,22 @@ class AdvisorTests {
     private OpenAiModerationModel moderationModel;
 
     @Test
-    void testChatController() {
-        var question = "Can Spring AI stream the result?";
-        var response = chatController.askQuestion(question);
-        logger.info(response.content());
+    void testSafeGuardAdvisor() {
+        var question = "Compare Spring AI with LangChain4J";
+        var response = chatController.chatWithSafeGuard(question).collect(Collectors.joining()).block();
+        logger.info(response);
 
-        Assertions.assertNotNull(response.content());
-        Assertions.assertFalse(response.content().isEmpty());
+        Assertions.assertNotNull(response);
+        Assertions.assertFalse(response.isEmpty());
     }
 
     @Test
-    void testCanaryGuardrail() {
-        var canaryWord = "12345";
-        var chatClient = chatClientBuilder.defaultAdvisors(
-                        CanaryGuardrailAdvisor.builder().canaryWordProducer(() -> canaryWord).build())
-                .build();
-
-        var response = chatClient.prompt("Say " + canaryWord).call().content();
-
-        Assertions.assertEquals("I can't answer this.", response);
-
+    void testResponseFormatAdvisor() {
+        var question = "What's the purpose of Spring AI?";
+        var response = chatController.chatWithResponseFormat(question).collect(Collectors.joining()).block();
         logger.info(response);
-    }
 
-
-    @Test
-    void testModerationGuardrail() {
-        var chatClient = chatClientBuilder.defaultAdvisors(
-                        ModerationGuardrailAdvisor.builder(moderationModel).build())
-                .build();
-
-        var response = chatClient.prompt("You're stupid").call().content();
-
-        Assertions.assertEquals("Your request was blocked by moderation.", response);
-
-        logger.info(response);
+        Assertions.assertNotNull(response);
+        Assertions.assertFalse(response.isEmpty());
     }
 }

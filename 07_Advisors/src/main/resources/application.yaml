@@ -3,9 +3,9 @@ spring:
     name: 06_Advisors
 
   ai:
-    ollama:
-      chat:
-        model: qwen3
+#    ollama:
+#      chat:
+#        model: qwen3
     openai:
       api-key: ${MyVerySecretChatGptKey}
 

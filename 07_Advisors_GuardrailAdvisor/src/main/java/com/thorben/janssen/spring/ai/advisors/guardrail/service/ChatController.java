@@ -1,7 +1,7 @@
 package com.thorben.janssen.spring.ai.advisors.guardrail.service;
 
-import com.thorben.janssen.spring.ai.advisors.guardrail.advisor.CanaryGuardrailAdvisor;
-import com.thorben.janssen.spring.ai.advisors.guardrail.advisor.ModerationGuardrailAdvisor;
+import com.thorben.janssen.spring.ai.advisors.guardrail.advisor.InputModerationGuardrailAdvisor;
+import com.thorben.janssen.spring.ai.advisors.guardrail.advisor.OutputModerationGuardrailAdvisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -22,8 +22,8 @@ public class ChatController {
     public ChatController(ChatClient.Builder chatClientBuilder, ModerationModel moderationModel) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().requestToString(ModelOptionsUtils::toJsonStringPrettyPrinter).build(),
-                                ModerationGuardrailAdvisor.builder(moderationModel).build(),
-                                CanaryGuardrailAdvisor.builder().build())
+                                InputModerationGuardrailAdvisor.builder(moderationModel).build(),
+                                OutputModerationGuardrailAdvisor.builder(moderationModel).build())
                 .build();
     }
 

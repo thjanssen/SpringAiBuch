@@ -8,6 +8,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.stream.Collectors;
+
 @SpringBootTest
 class SpringAiTests {
 
@@ -22,8 +24,8 @@ class SpringAiTests {
 	@Test
 	void test() {
         var question = "Can Spring AI stream the result?";
-        var response = chatController.chat(question);
-//		logger.info(response);
+        var response = chatController.chat(question).collect(Collectors.joining()).block();
+		logger.info(response);
 	}
 
 }
