@@ -1,21 +1,17 @@
-package com.thorben.janssen.spring.ai.workshop.advisors.rest;
+package com.thorben.janssen.spring.ai.workshop.advisors.service;
 
 import com.thorben.janssen.spring.ai.workshop.advisors.advisor.ResponseFormatAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.model.ModelOptionsUtils;
-import org.springframework.ai.openai.OpenAiModerationModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-@RestController
+@Service
 public class ChatController {
 
     private final ChatClient chatClient;

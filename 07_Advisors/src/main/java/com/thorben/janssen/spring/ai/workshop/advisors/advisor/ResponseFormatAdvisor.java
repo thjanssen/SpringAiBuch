@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 
 public class ResponseFormatAdvisor implements CallAdvisor, StreamAdvisor {
 
-    private static final String DEFAULT_INSTRURCTIONS = "Always answer in at least 2 but not more than 15 complete sentences.";
+    private static final String DEFAULT_INSTRUCTIONS = "Always answer in at least 2 but not more than 15 complete sentences.";
     private static final String DEFAULT_SYSTEM_MESSAGE_FORMAT = "%s %s";
     private static final int DEFAULT_ORDER = 0;
     private final int order;
@@ -69,7 +69,7 @@ public class ResponseFormatAdvisor implements CallAdvisor, StreamAdvisor {
     }
 
     public static final class Builder {
-        private String instructions =  DEFAULT_INSTRURCTIONS;
+        private String instructions =  DEFAULT_INSTRUCTIONS;
         private int order = DEFAULT_ORDER;
         private String systemMessageFormat = DEFAULT_SYSTEM_MESSAGE_FORMAT;
 

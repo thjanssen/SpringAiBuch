@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.workshop.advisors;
 
-import com.thorben.janssen.spring.ai.workshop.advisors.rest.ChatController;
+import com.thorben.janssen.spring.ai.workshop.advisors.service.ChatController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

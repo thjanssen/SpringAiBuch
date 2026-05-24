@@ -1,5 +1,7 @@
 package com.thorben.janssen.spring.ai.advisors.guardrail.advisor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
@@ -19,6 +21,8 @@ import java.util.Map;
 
 public class OutputModerationGuardrailAdvisor implements CallAdvisor {
 
+    private static final Logger logger = LoggerFactory.getLogger(OutputModerationGuardrailAdvisor.class);
+
     private static final String DEFAULT_MODERATION_MESSAGE = "Your request was blocked by moderation.";
 
     private final String moderationMessage;
@@ -33,28 +37,32 @@ public class OutputModerationGuardrailAdvisor implements CallAdvisor {
     @Override
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
         var request = chatClientRequest;
-        boolean retry = false;
+        boolean retry;
         int attempts = 0;
         ChatClientResponse response;
         do {
             attempts++;
-            response = callAdvisorChain.nextCall(request);
+            retry = false;
+            logger.debug("Output moderation attempt: {}", attempts);
+            response = callAdvisorChain.copy(this).nextCall(request);
             var moderationResponse = moderate(response);
             for (ModerationResult result : moderationResponse.getResult().getOutput().getResults()) {
                 if (result.isFlagged()) {
+                    logger.debug("Response was flagged by moderation model: "+result.getCategoryScores().toString());
                     retry = true;
                     Prompt augmentedPrompt = chatClientRequest.prompt().augmentUserMessage((userMessage) -> {
                         UserMessage.Builder message = userMessage.mutate();
                         String oldMessage = userMessage.getText();
                         return message.text(oldMessage + System.lineSeparator() + "Response was flagged by moderation model: "+result.getCategoryScores().toString()).build();
                     });
-                    request.mutate().prompt(augmentedPrompt);
+                    request = request.mutate().prompt(augmentedPrompt).build();
                     break;
                 }
             }
-        } while (retry && attempts <= 3);
+        } while (retry && attempts < 3);
         if (retry == true) {
-            createFailureResponse(chatClientRequest);
+            logger.debug("Retries exceeded. Output moderation failed. Returning failure response.");
+            response = createFailureResponse(chatClientRequest);
         }
         return response;
     }
