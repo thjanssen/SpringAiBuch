@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Flux;
 
 @Service
@@ -22,7 +20,7 @@ public class ChatController {
                 .build();
     }
 
-    public Flux<String> chat(@RequestBody String message) {
+    public Flux<String> chat(String message) {
         return chatClient.prompt(message).stream().content();
     }
 }
