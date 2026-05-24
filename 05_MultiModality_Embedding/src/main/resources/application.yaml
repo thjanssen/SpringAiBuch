@@ -1,6 +1,6 @@
 spring:
   application:
-    name: MultiModality_Image
+    name: MultiModality_Embedding
 
   ai:
 #    ollama:

@@ -31,7 +31,7 @@
     <properties>
         <java.version>21</java.version>
         <vaadin.version>25.0.0</vaadin.version>
-        <spring-ai.version>2.0.0-M2</spring-ai.version>
+        <spring-ai.version>2.0.0-M7</spring-ai.version>
     </properties>
 
 	<dependencyManagement>
@@ -91,6 +91,8 @@
         <module>04_Test_TestcontainersDockerModelRunner</module>
         <module>05_MultiModality_Audio</module>
         <module>05_MultiModality_Image</module>
+        <module>05_MultiModality_Moderation</module>
+        <module>05_MultiModality_Embedding</module>
         <module>07_Advisors</module>
         <module>07_Advisors_GuardrailAdvisor</module>
         <module>08_ChatMemory_InMemory</module>

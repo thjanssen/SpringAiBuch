@@ -1,0 +1,61 @@
+@startuml
+
+'skinparam linetype ortho
+
+interface Model {
+    TRes call(TReq request)
+}
+
+interface ChatModel {
+    ChatResponse call(Prompt prompt)
+}
+
+class OpenAiChatModel
+class MistralAiChatModel
+class AnthropicChatModel
+class OllamaChatModel
+class "..." as MoreModels
+interface ChatClient
+
+interface StreamingChatModel {
+    Flux<ChatResponse> stream(Prompt prompt)
+}
+
+interface StreamingModel {
+    Flux<TRes> stream(TReq request)
+}
+
+' Layout
+Model -[hidden]down- ChatModel
+ChatModel -[hidden]down- MoreModels
+
+MoreModels -[hidden]left- MistralAiChatModel
+MistralAiChatModel -[hidden]left- AnthropicChatModel
+AnthropicChatModel -[hidden]left- OllamaChatModel
+OllamaChatModel -[hidden]left- OpenAiChatModel
+
+OpenAiChatModel -[hidden]left- ChatClient
+
+MoreModels -[hidden]down- StreamingChatModel
+StreamingChatModel -[hidden]down- StreamingModel
+
+' Beziehungen
+Model <|-- ChatModel
+StreamingModel <|-- StreamingChatModel
+
+ChatModel <|.. OpenAiChatModel
+ChatModel <|.. MistralAiChatModel
+ChatModel <|.. AnthropicChatModel
+ChatModel <|.. OllamaChatModel
+ChatModel <|.. MoreModels
+
+StreamingChatModel <|.. OpenAiChatModel
+StreamingChatModel <|.. MistralAiChatModel
+StreamingChatModel <|.. AnthropicChatModel
+StreamingChatModel <|.. OllamaChatModel
+StreamingChatModel <|.. MoreModels
+
+ChatClient --> StreamingChatModel
+ChatClient --> ChatModel
+
+@enduml

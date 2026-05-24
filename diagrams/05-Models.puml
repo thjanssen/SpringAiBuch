@@ -1,0 +1,48 @@
+@startuml
+
+
+interface "Model<TReq, TRes>" as Model {
+    TRes call(TReq request)
+}
+
+interface ChatModel
+interface ImageModel
+interface TextToSpeechModel
+interface TranscriptionModel
+interface EmbeddingModel
+interface ModerationModel
+
+interface StreamingChatModel
+interface StreamingTextToSpeechModel
+
+interface "StreamingModel<TReq, TResChunk>" as StreamingModel {
+    Flux<TResChunk> stream(TReq request)
+}
+
+Model -[hidden]down- ChatModel
+ChatModel -[hidden]right- ImageModel
+ImageModel -[hidden]right- TextToSpeechModel
+TextToSpeechModel -[hidden]right- TranscriptionModel
+TranscriptionModel -[hidden]right- EmbeddingModel
+EmbeddingModel -[hidden]right- ModerationModel
+
+TextToSpeechModel -[hidden]down- StreamingChatModel
+StreamingChatModel -[hidden]right- StreamingTextToSpeechModel
+
+StreamingTextToSpeechModel -[hidden]down- StreamingModel
+
+
+Model <|-- ChatModel
+Model <|-- ImageModel
+Model <|-- TextToSpeechModel
+Model <|-- TranscriptionModel
+Model <|-- EmbeddingModel
+Model <|-- ModerationModel
+
+StreamingChatModel <|-- ChatModel
+StreamingTextToSpeechModel <|-- TextToSpeechModel
+
+StreamingModel <|-- StreamingChatModel
+StreamingModel <|-- StreamingTextToSpeechModel
+
+@enduml

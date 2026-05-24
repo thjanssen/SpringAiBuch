@@ -1,6 +1,6 @@
-package com.thorben.janssen.spring.ai.workshop.prompt;
+package com.thorben.janssen.spring.ai.image;
 
-import com.thorben.janssen.spring.ai.workshop.prompt.rest.ChatController;
+import com.thorben.janssen.spring.ai.image.service.ChatController;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class SpringAiTests {
@@ -23,8 +24,8 @@ class SpringAiTests {
 
 	@Test
 	void test() throws IOException {
-        var question = "Can Spring AI stream the result?";
-        var response = chatController.askQuestion(question);
+        var question = "Dies ist ein String für den ein Embedding berechnet werden soll.";
+        var response = chatController.chat(question).collect(Collectors.joining()).block();
 		logger.info(response);
 	}
 
