@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Service
-public class ChatController {
+public class ChatService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     private final EmbeddingModel embeddingModel;
 
-    public ChatController(EmbeddingModel embeddingModel) {
+    public ChatService(EmbeddingModel embeddingModel) {
         this.embeddingModel = embeddingModel;
     }
 

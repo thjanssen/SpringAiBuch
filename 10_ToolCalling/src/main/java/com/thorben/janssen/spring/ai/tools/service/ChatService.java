@@ -8,12 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ChatController {
-
-//    private static final String SYSTEM_PROMPT = """
-//        You are a friendly and helpful senior Java developer.
-//        You format all your answers as a HTML snippet so that I looks nice as the content of a <div> on a website using TailwindCSS.
-//        """;
+public class ChatService {
 
     private static final String SYSTEM_PROMPT = """
         You are a friendly and helpful senior Java developer.
@@ -21,7 +16,7 @@ public class ChatController {
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder, CurrentTimeTool currenTimeTool) {
+    public ChatService(ChatClient.Builder chatClientBuilder, CurrentTimeTool currenTimeTool) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
                     SimpleLoggerAdvisor.builder().requestToString(ModelOptionsUtils::toJsonStringPrettyPrinter).build()

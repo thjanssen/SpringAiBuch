@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.workshop.test;
 
-import com.thorben.janssen.spring.ai.workshop.test.service.ChatController;
+import com.thorben.janssen.spring.ai.workshop.test.service.ChatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -19,9 +19,7 @@ import org.springframework.ai.ollama.management.ModelManagementOptions;
 import org.springframework.ai.ollama.management.PullModelStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +29,7 @@ class SpringAiTests {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
 
 	@Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
     @Autowired
     private ChatClient.Builder chatClientBuilder;
@@ -39,7 +37,7 @@ class SpringAiTests {
 	@Test
 	void testRelevancy() {
         var question = "How many kg are in a metric ton?";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
         var evaluator = RelevancyEvaluator.builder().chatClientBuilder(chatClientBuilder).build();
@@ -56,7 +54,7 @@ class SpringAiTests {
     @Test
     void testFacts() {
         var question = "How many kg are in a metric ton?";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
         OllamaApi ollamaApi = OllamaApi.builder().build();

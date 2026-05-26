@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.advisors.guardrail;
 
-import com.thorben.janssen.spring.ai.advisors.guardrail.service.ChatController;
+import com.thorben.janssen.spring.ai.advisors.guardrail.service.ChatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ class SpringAiTests {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
 
 	@Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
     @Autowired
     private ChatClient.Builder chatClientBuilder;
@@ -25,7 +25,7 @@ class SpringAiTests {
 	@Test
 	void testInputModerationGuardrailAdvisor() {
         var question = "You are an idiot";
-        var response = chatController.chatWithInputModeration(question).collect(Collectors.joining()).block();
+        var response = chatService.chatWithInputModeration(question).collect(Collectors.joining()).block();
 		logger.info(response);
 		Assertions.assertEquals("Your request was blocked by moderation.", response);
 	}
@@ -33,7 +33,7 @@ class SpringAiTests {
 	@Test
 	void testRelevancyCheckGuardrailAdvisor() {
 		var question = "Describe Spring AI in 2 sentences.";
-		var response = chatController.chatWithRelevancyCheck(question).collect(Collectors.joining()).block();
+		var response = chatService.chatWithRelevancyCheck(question).collect(Collectors.joining()).block();
 		logger.info(response);
 	}
 

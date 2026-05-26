@@ -16,15 +16,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Service
-public class ChatController {
+public class ChatService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     private final ChatClient chatClient;
     private final TextToSpeechModel speechModel;
     private final TranscriptionModel transcriptionModel;
 
-    public ChatController(ChatClient.Builder chatClientBuilder, TextToSpeechModel speechModel, TranscriptionModel transcriptionModel) {
+    public ChatService(ChatClient.Builder chatClientBuilder, TextToSpeechModel speechModel, TranscriptionModel transcriptionModel) {
         this.chatClient = chatClientBuilder.build();
         this.speechModel = speechModel;
         this.transcriptionModel = transcriptionModel;

@@ -2,12 +2,11 @@ package com.thorben.janssen.spring.ai.workshop.test.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ChatController {
+public class ChatService {
 
     private static final String SYSTEM_PROMPT = """
         You are a friendly and helpful senior Java developer.
@@ -15,7 +14,7 @@ public class ChatController {
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder) {
+    public ChatService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
                     SimpleLoggerAdvisor.builder().build()

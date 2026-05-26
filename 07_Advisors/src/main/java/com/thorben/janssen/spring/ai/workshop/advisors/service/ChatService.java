@@ -12,12 +12,12 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 @Service
-public class ChatController {
+public class ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder,
-                          @Value("classpath:/prompts/system.txt")
+    public ChatService(ChatClient.Builder chatClientBuilder,
+                       @Value("classpath:/prompts/system.txt")
                           Resource systemPrompt) {
         this.chatClient = chatClientBuilder
                 .defaultSystem(systemPrompt)

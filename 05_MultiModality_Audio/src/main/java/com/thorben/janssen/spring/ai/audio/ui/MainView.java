@@ -1,7 +1,7 @@
 package com.thorben.janssen.spring.ai.audio.ui;
 
 import com.thorben.janssen.spring.ai.audio.service.AiResponse;
-import com.thorben.janssen.spring.ai.audio.service.ChatController;
+import com.thorben.janssen.spring.ai.audio.service.ChatService;
 import com.vaadin.flow.component.messages.MessageInput;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,11 +23,11 @@ public class MainView extends VerticalLayout implements RouterLayout {
     private List<VerticalLayout> tabContents = new ArrayList<>();
 
 
-    MainView(ChatClient.Builder chatClientBuilder, ChatController chatController) {
+    MainView(ChatClient.Builder chatClientBuilder, ChatService chatService) {
         setSizeFull();
         setMargin(false);
 
-        tabContents.add(createTabContent(chatController));
+        tabContents.add(createTabContent(chatService));
 
         Tab tab1 = new Tab("Chat1");
         Tab newTab = new Tab("+");
@@ -38,7 +38,7 @@ public class MainView extends VerticalLayout implements RouterLayout {
                 Tab tab = new Tab("Chat "+(tabs.getSelectedIndex()+1));
                 tabs.addTabAtIndex(tabs.getSelectedIndex(), tab);
 
-                var content = createTabContent(chatController);
+                var content = createTabContent(chatService);
                 tabContents.add(content);
                 add(content);
 
@@ -53,7 +53,7 @@ public class MainView extends VerticalLayout implements RouterLayout {
         add(tabs, tabContents.get(0));
     }
 
-    private VerticalLayout createTabContent(ChatController chatController) {
+    private VerticalLayout createTabContent(ChatService chatService) {
         var conversationId = UUID.randomUUID();
 
         VerticalLayout messageList = new VerticalLayout();
@@ -79,7 +79,7 @@ public class MainView extends VerticalLayout implements RouterLayout {
             messageList.add(reply);
 
             // Call ChatController to interact with LLM and stream back the reply to UI
-            AiResponse response = chatController.chat(ev.getValue());
+            AiResponse response = chatService.chat(ev.getValue());
             reply.appendMarkdown(response.content());
             Audio audio = new Audio("data:audio/mpeg;base64," + Base64.getEncoder().encodeToString(response.audio()));
             messageList.add(audio);

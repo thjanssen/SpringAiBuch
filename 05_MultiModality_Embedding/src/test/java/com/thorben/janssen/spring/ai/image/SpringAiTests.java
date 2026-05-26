@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.image;
 
-import com.thorben.janssen.spring.ai.image.service.ChatController;
+import com.thorben.janssen.spring.ai.image.service.ChatService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ class SpringAiTests {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
 
 	@Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
     @Autowired
     private ChatClient.Builder chatClientBuilder;
@@ -25,7 +25,7 @@ class SpringAiTests {
 	@Test
 	void test() throws IOException {
         var question = "Dies ist ein String für den ein Embedding berechnet werden soll.";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
 		logger.info(response);
 	}
 

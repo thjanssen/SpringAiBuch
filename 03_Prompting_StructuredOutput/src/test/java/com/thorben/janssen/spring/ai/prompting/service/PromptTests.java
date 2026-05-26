@@ -15,12 +15,12 @@ class PromptTests {
 	private static final Logger logger = LoggerFactory.getLogger(PromptTests.class);
 
 	@Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
 	@Test
 	void test() {
         var question = "Name 3 important interfaces Spring AI.";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info(response);
 
         Assertions.assertNotNull(response);

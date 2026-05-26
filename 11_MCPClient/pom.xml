@@ -15,9 +15,5 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-mcp-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.thorben.janssen.spring.ai</groupId>
-            <artifactId>99_Shared</artifactId>
-        </dependency>
     </dependencies>
 </project>

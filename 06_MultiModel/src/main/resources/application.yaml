@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: MultiModel
+
+  ai:
+    ollama:
+      chat:
+        model: qwen3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+    model:
+      moderation:
+        options:
+          model: omni-moderation-latest
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai: DEBUG
+          web: DEBUG
+      com:
+        thorben:
+          janssen: DEBUG
+
+server:
+  error:
+    include-message: always

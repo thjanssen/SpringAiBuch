@@ -1,22 +1,20 @@
-package com.thorben.janssen.spring.ai.basic.service;
+package com.thorben.janssen.spring.ai.workshop.test.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ChatController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+public class ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder) {
+    public ChatService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultAdvisors(
+                    SimpleLoggerAdvisor.builder().build()
+                )
                 .build();
     }
 

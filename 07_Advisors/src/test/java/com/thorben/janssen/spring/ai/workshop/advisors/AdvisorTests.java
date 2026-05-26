@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.workshop.advisors;
 
-import com.thorben.janssen.spring.ai.workshop.advisors.service.ChatController;
+import com.thorben.janssen.spring.ai.workshop.advisors.service.ChatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ class AdvisorTests {
     private static final Logger logger = LoggerFactory.getLogger(AdvisorTests.class);
 
     @Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
     @Autowired
     private ChatClient.Builder chatClientBuilder;
@@ -29,7 +29,7 @@ class AdvisorTests {
     @Test
     void testSafeGuardAdvisor() {
         var question = "Compare Spring AI with LangChain4J";
-        var response = chatController.chatWithSafeGuard(question).collect(Collectors.joining()).block();
+        var response = chatService.chatWithSafeGuard(question).collect(Collectors.joining()).block();
         logger.info(response);
 
         Assertions.assertNotNull(response);
@@ -39,7 +39,7 @@ class AdvisorTests {
     @Test
     void testResponseFormatAdvisor() {
         var question = "What's the purpose of Spring AI?";
-        var response = chatController.chatWithResponseFormat(question).collect(Collectors.joining()).block();
+        var response = chatService.chatWithResponseFormat(question).collect(Collectors.joining()).block();
         logger.info(response);
 
         Assertions.assertNotNull(response);

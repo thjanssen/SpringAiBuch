@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ChatController {
+public class ChatService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     private final ModerationModel moderationModel;
 
-    public ChatController(ModerationModel moderationModel) {
+    public ChatService(ModerationModel moderationModel) {
         this.moderationModel = moderationModel;
     }
 

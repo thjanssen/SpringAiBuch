@@ -17,14 +17,14 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 
 @Service
-public class ChatController {
+public class ChatService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     private final ChatClient chatClient;
     private final ImageModel imageModel;
 
-    public ChatController(ChatClient.Builder chatClientBuilder, ImageModel imageModel) {
+    public ChatService(ChatClient.Builder chatClientBuilder, ImageModel imageModel) {
         this.chatClient = chatClientBuilder.build();
         this.imageModel = imageModel;
     }

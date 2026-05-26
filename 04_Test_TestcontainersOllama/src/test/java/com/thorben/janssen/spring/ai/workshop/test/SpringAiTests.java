@@ -1,6 +1,6 @@
 package com.thorben.janssen.spring.ai.workshop.test;
 
-import com.thorben.janssen.spring.ai.workshop.test.service.ChatController;
+import com.thorben.janssen.spring.ai.workshop.test.service.ChatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -9,7 +9,6 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.evaluation.FactCheckingEvaluator;
 import org.springframework.ai.chat.evaluation.RelevancyEvaluator;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.evaluation.EvaluationRequest;
 import org.springframework.ai.ollama.OllamaChatModel;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.ollama.OllamaContainer;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,7 @@ class SpringAiTests {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
 
 	@Autowired
-    private ChatController chatController;
+    private ChatService chatService;
 
     @Autowired
     private ChatClient.Builder chatClientBuilder;
@@ -44,7 +42,7 @@ class SpringAiTests {
 	@Test
 	void testRelevancy() {
         var question = "Tell me something about the solar system";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
         var evaluator = new RelevancyEvaluator(chatClientBuilder);
@@ -61,7 +59,7 @@ class SpringAiTests {
     @Test
     void testFacts() {
         var question = "How many kg are in a metric ton?";
-        var response = chatController.chat(question).collect(Collectors.joining()).block();
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info("LLM Response: "+response);
 
         var ollamaApi = OllamaApi.builder().baseUrl(ollamaContainer.getEndpoint()).build();

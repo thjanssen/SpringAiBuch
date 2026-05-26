@@ -12,13 +12,13 @@ import reactor.core.publisher.Flux;
 import java.util.stream.Collectors;
 
 @Service
-public class ChatController {
+public class ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder,
-                          @Value("classpath:/prompts/system.st")
-                          Resource systemPrompt) {
+    public ChatService(ChatClient.Builder chatClientBuilder,
+                       @Value("classpath:/prompts/system.st")
+                       Resource systemPrompt) {
         chatClient = chatClientBuilder
                 // activate native APIs for structured output - NOT supported by every model
                 .defaultAdvisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)

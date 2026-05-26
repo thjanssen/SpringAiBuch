@@ -1,13 +1,14 @@
-package com.thorben.janssen.spring.ai.workshop.test.service;
+package com.thorben.janssen.spring.ai.rag.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ChatController {
+public class ChatService {
 
     private static final String SYSTEM_PROMPT = """
         You are a friendly and helpful senior Java developer.
@@ -15,9 +16,12 @@ public class ChatController {
 
     private final ChatClient chatClient;
 
-    public ChatController(@Qualifier("openAiChatClientBuilder") ChatClient.Builder chatClientBuilder) {
+    public ChatService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
+                    QuestionAnswerAdvisor.builder(vectorStore)
+//                            .searchRequest(SearchRequest.builder().similarityThreshold(0.8d).topK(2).build())
+                            .build(),
                     SimpleLoggerAdvisor.builder().build()
                 )
                 .defaultSystem(SYSTEM_PROMPT)

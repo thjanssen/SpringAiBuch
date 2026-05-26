@@ -1,29 +1,21 @@
 package com.thorben.janssen.spring.ai.prompting.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import java.util.Map;
-
 @Service
-public class ChatController {
+public class ChatService {
 
     private static final String SYSTEM_PROMPT = "You are a friendly and helpful senior Java developer.";
 
     private final ChatClient chatClient;
 
-    public ChatController(ChatClient.Builder chatClientBuilder,
-                          @Value("classpath:/prompts/system.txt")
+    public ChatService(ChatClient.Builder chatClientBuilder,
+                       @Value("classpath:/prompts/system.txt")
                           Resource systemPrompt) {
         chatClient = chatClientBuilder
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
