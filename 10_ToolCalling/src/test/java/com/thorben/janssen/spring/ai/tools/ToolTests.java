@@ -1,4 +1,4 @@
-package com.thorben.janssen.spring.ai.workshop.tool;
+package com.thorben.janssen.spring.ai.tools;
 
 import com.thorben.janssen.spring.ai.tools.service.ChatService;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class ToolTests {
@@ -20,11 +22,11 @@ class ToolTests {
 
 	@Test
 	void test() {
-        var question = "Can Spring AI stream the result?";
-        var response = chatService.chat(question);
+		var question = "What time is it?";
+		var response = chatService.chat(question).collect(Collectors.joining()).block();
 //        logger.info(response.content());
 //
 //        Assertions.assertNotNull(response.content());
-//        Assertions.assertFalse(response.content().isEmpty());	}
-
+//        Assertions.assertFalse(response.content().isEmpty());
+	}
 }

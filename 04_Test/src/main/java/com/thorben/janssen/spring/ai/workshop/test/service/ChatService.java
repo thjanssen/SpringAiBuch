@@ -9,10 +9,6 @@ import reactor.core.publisher.Flux;
 @Service
 public class ChatService {
 
-    private static final String SYSTEM_PROMPT = """
-        You are a friendly and helpful senior Java developer.
-        """;
-
     private final ChatClient chatClient;
 
     public ChatService(@Qualifier("openAiChatClientBuilder") ChatClient.Builder chatClientBuilder) {
@@ -20,7 +16,6 @@ public class ChatService {
                 .defaultAdvisors(
                     SimpleLoggerAdvisor.builder().build()
                 )
-                .defaultSystem(SYSTEM_PROMPT)
                 .build();
     }
 

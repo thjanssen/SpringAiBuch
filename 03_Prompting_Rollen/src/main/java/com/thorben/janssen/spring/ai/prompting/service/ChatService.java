@@ -2,6 +2,11 @@ package com.thorben.janssen.spring.ai.prompting.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -14,14 +19,28 @@ public class ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatService(ChatClient.Builder chatClientBuilder,
-                       @Value("classpath:/prompts/system.txt")
-                          Resource systemPrompt) {
+    public ChatService(ChatClient.Builder chatClientBuilder) {
+//        chatClient = chatClientBuilder
+//                // define model configuration
+//                .defaultOptions(ChatOptions.builder()
+//                        .model("gpt-4")
+//                        .maxTokens(250)
+//                        .topK(10)
+//                        .topP(0.8)
+//                        .temperature(0.3))
+//                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+//                // specify a default system prompt
+//                .defaultSystem(SYSTEM_PROMPT)
+//                .build();
         chatClient = chatClientBuilder
+                // define model configuration
+                .defaultOptions(OpenAiChatOptions.builder()
+                        .model("gpt-5-mini")
+                        .maxCompletionTokens(1500)
+                        .temperature(1D))
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 // specify a default system prompt
-//                .defaultSystem(SYSTEM_PROMPT)
-                .defaultSystem(systemPrompt)
+                .defaultSystem(SYSTEM_PROMPT)
                 .build();
     }
 
@@ -36,10 +55,10 @@ public class ChatService {
 //        var response = chatClient.prompt(prompt).stream().content();
 
         // fluent API to define a prompt with system and user prompt
-        var response = chatClient.prompt()
-                .system(SYSTEM_PROMPT)
-                .user(message)
-                .stream().content();
+var response = chatClient.prompt()
+        .system(SYSTEM_PROMPT)
+        .user(message)
+        .stream().content();
 
         return response;
     }

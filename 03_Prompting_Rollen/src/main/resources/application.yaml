@@ -1,6 +1,6 @@
 spring:
   application:
-    name: 03_Prompting_Rollen
+    name: Prompting_Rollen
 
   ai:
 #    ollama:
@@ -8,6 +8,10 @@ spring:
 #        model: gemma3
     openai:
       api-key: ${MyVerySecretChatGptKey}
+      chat:
+        model: gpt-5
+        max-completion-tokens: 1500
+        temperature: 1
 
   # Docker-based models using OpenAI API
 #    openai:

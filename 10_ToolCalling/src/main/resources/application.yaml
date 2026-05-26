@@ -9,23 +9,11 @@ spring:
     openai:
       api-key: ${MyVerySecretChatGptKey}
 
-  mvc:
-    log-request-details: true
-
 logging:
-    level:
-      org:
-        springframework:
-          ai: DEBUG
-          web: DEBUG
-
-
-server:
-  error:
-    include-message: always
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,metrics
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: 03_Prompting_StructuredOutput
+    name: Prompting_StructuredOutput
 
   ai:
 #    ollama:
