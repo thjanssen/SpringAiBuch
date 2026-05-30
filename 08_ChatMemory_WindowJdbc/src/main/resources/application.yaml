@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: ChatMemory_JDBC
+
+  ai:
+#    ollama:
+#      chat:
+#        model: gemma3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+  datasource:
+    
+    url: jdbc:hsqldb:file:db/chatmemory
+    username: sa
+    password:
+
+logging:
+    level:
+      org:
+        springframework:
+          ai: DEBUG
+          web: DEBUG
+          jdbc: DEBUG
+
+server:
+  error:
+    include-message: always

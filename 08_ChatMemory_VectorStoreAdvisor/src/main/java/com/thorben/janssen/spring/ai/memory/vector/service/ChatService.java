@@ -1,0 +1,36 @@
+package com.thorben.janssen.spring.ai.memory.vector.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.VectorStoreChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+
+import java.util.UUID;
+
+@Service
+public class ChatService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
+
+    private final ChatClient chatClient;
+
+    public ChatService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
+        this.chatClient = chatClientBuilder
+                .defaultAdvisors(
+                        VectorStoreChatMemoryAdvisor.builder(vectorStore).build(),
+                        SimpleLoggerAdvisor.builder().build())
+                .build();
+    }
+
+    public Flux<String> chat(String message, String conversationId) {
+        return chatClient.prompt(message)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .stream()
+                .content();
+    }
+}

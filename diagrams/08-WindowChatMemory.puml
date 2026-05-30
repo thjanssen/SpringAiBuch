@@ -1,0 +1,41 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor User
+participant ChatClient
+participant "MemoryAdvisor" as Advisor
+participant "ChatMemory" as Memory
+database "ChatMemoryRepository" as Repository
+participant "ChatModel / LLM" as LLM
+
+User -> ChatClient : Prompt
+ChatClient -> Advisor : adviseCall / adviseStream(...)
+
+group vor Prompt Ausführung
+
+Advisor -> Memory : get(conversationId)
+Memory -> Repository : findByConversationId(...)
+Repository --> Memory : bisherige Nachrichten
+Memory --> Advisor : Nachrichtenfenster
+
+Advisor -> Advisor : Prompt mit Chat Memory erweitern
+
+Advisor -> Memory : add(conversationId, userMessage)
+Memory -> Repository : save(...)
+
+end
+
+Advisor -> LLM : erweiterter Prompt
+LLM --> Advisor : Antwort
+
+group nach Prompt Ausführung
+
+Advisor -> Memory : add(conversationId, assistantMessage)
+Memory -> Repository : save(...)
+
+end
+
+Advisor --> ChatClient : Antwort
+ChatClient --> User : Antwort
+@enduml

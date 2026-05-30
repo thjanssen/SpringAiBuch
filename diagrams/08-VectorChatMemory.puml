@@ -1,0 +1,43 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor User
+participant ChatClient
+participant "VectorStoreChatMemoryAdvisor" as Advisor
+database "VectorStore" as VectorStore
+participant "EmbeddingModel" as EmbeddingModel
+participant "ChatModel / LLM" as LLM
+
+User -> ChatClient : Prompt senden
+ChatClient -> Advisor : before(request)
+
+group Before Phase
+
+Advisor -> VectorStore : similaritySearch(userMessage)
+VectorStore -> EmbeddingModel : Embedding für userMessage erzeugen
+EmbeddingModel --> VectorStore : Embedding
+VectorStore --> Advisor : relevante frühere Nachrichten
+
+Advisor -> Advisor : Prompt mit relevanter Chat History erweitern
+
+Advisor -> VectorStore : Add userMessage
+VectorStore -> EmbeddingModel : Embedding für userMessage erzeugen
+EmbeddingModel --> VectorStore : Query Embedding
+
+end
+
+Advisor -> LLM : erweiterter Prompt
+LLM --> Advisor : Antwort
+
+group After Phase
+
+Advisor -> VectorStore : Assistant Response speichern
+VectorStore -> EmbeddingModel : Embedding für neue Nachrichten erzeugen
+EmbeddingModel --> VectorStore : Embedding
+
+end
+
+Advisor --> ChatClient : Antwort
+ChatClient --> User : Antwort anzeigen
+@enduml
