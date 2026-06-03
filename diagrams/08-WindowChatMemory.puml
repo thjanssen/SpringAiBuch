@@ -19,7 +19,7 @@ Memory -> Repository : findByConversationId(...)
 Repository --> Memory : bisherige Nachrichten
 Memory --> Advisor : Nachrichtenfenster
 
-Advisor -> Advisor : Prompt mit Chat Memory erweitern
+Advisor -> Advisor : Prompt mit Nachrichtenfenster erweitern
 
 Advisor -> Memory : add(conversationId, userMessage)
 Memory -> Repository : save(...)

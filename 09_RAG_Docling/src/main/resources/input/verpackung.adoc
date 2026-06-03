@@ -1,0 +1,138 @@
+= Prozessbeschreibung: Verpacken einer Bestellung
+
+== Ziel
+
+Dieser Prozess beschreibt das Verpacken einer Kundenbestellung nach Abschluss der Kommissionierung und vor der Übergabe an den Versanddienstleister. Ziel ist die sichere, vollständige und effiziente Vorbereitung der Bestellung für den Versand an den Kunden.
+
+== Voraussetzungen
+
+Das Verpacken einer Bestellung ist möglich, wenn:
+
+* ein freigegebener Kundenauftrag vorliegt,
+* alle bestellten Artikel kommissioniert wurden,
+* die Artikel für den Versand verfügbar sind,
+* die erforderlichen Verpackungsmaterialien bereitstehen.
+
+== Prozessablauf
+
+=== 1. Übergabe der kommissionierten Bestellung
+
+Die kommissionierten Artikel werden dem Verpackungsbereich bereitgestellt.
+
+Erfasste Informationen:
+
+* Bestellnummer
+* Kundennummer
+* Artikel und Mengen
+* Versandart
+* Besondere Versandanforderungen
+
+=== 2. Prüfung der Bestellung
+
+Vor dem Verpacken wird geprüft:
+
+* Sind alle bestellten Artikel vorhanden?
+* Stimmen Artikel und Mengen mit der Bestellung überein?
+* Sind die Artikel unbeschädigt?
+* Sind alle für den Versand erforderlichen Dokumente vorhanden?
+
+=== 3. Auswahl der Verpackung
+
+Für die Bestellung wird eine geeignete Verpackung ausgewählt.
+
+Berücksichtigt werden:
+
+* Größe und Gewicht der Artikel
+* Empfindlichkeit der Ware
+* Versandart
+* Nachhaltigkeitsanforderungen
+* Wirtschaftlichkeit der Verpackung
+
+=== 4. Verpacken der Bestellung
+
+Die Artikel werden transportsicher verpackt.
+
+Dabei werden folgende Maßnahmen durchgeführt:
+
+* Platzierung der Artikel in der Verpackung
+* Verwendung von Füll- und Polstermaterial
+* Schutz empfindlicher Produkte
+* Zusammenführung aller Artikel der Bestellung
+* Beilage erforderlicher Dokumente
+
+Mögliche Dokumente:
+
+* Lieferschein
+* Retoureninformationen
+* Produktinformationen
+* Zollunterlagen
+
+=== 5. Verschließen der Verpackung
+
+Die Verpackung wird verschlossen und für den Transport vorbereitet.
+
+Dabei wird geprüft:
+
+* Ist die Verpackung ausreichend stabil?
+* Sind alle Öffnungen sicher verschlossen?
+* Ist die Ware gegen Verrutschen geschützt?
+
+=== 6. Erstellung des Versandlabels
+
+Das Versandsystem erstellt ein Versandlabel.
+
+Das Label enthält mindestens:
+
+* Empfängeradresse
+* Absenderadresse
+* Sendungsnummer
+* Versanddienstleister
+* Routing- und Sortierinformationen
+
+=== 7. Anbringen des Versandlabels
+
+Das Versandlabel wird auf der Verpackung angebracht.
+
+Geprüft werden:
+
+* Lesbarkeit des Labels
+* Vollständigkeit der Angaben
+* Korrekte Zuordnung zur Bestellung
+
+=== 8. Qualitätskontrolle
+
+Vor der Übergabe an den Versand erfolgt eine abschließende Kontrolle.
+
+Geprüft werden:
+
+* Vollständigkeit der Bestellung
+* Unversehrtheit der Verpackung
+* Vorhandensein aller Dokumente
+* Korrekte Kennzeichnung
+
+=== 9. Statusaktualisierung
+
+Das System aktualisiert den Bestellstatus.
+
+Das System führt folgende Aktionen aus:
+
+* Status auf `VERPACKT` setzen
+* Sendungsnummer speichern
+* Versandbereitschaft kennzeichnen
+* Versanddienstleister informieren
+
+=== 10. Bereitstellung für den Versand
+
+Die verpackte Bestellung wird im Versandbereich bereitgestellt.
+
+Die Bestellung wartet auf die Übergabe an den Versanddienstleister.
+
+=== 11. Prozessende
+
+Die Bestellung befindet sich im Status `VERPACKT`.
+
+Alle Artikel wurden transportsicher verpackt und für den Versand vorbereitet.
+
+== Ergebnis
+
+Die bestellten Waren wurden vollständig geprüft, transportsicher verpackt, gekennzeichnet und für den Versand vorbereitet. Alle relevanten Bestell- und Versanddaten wurden im System dokumentiert.

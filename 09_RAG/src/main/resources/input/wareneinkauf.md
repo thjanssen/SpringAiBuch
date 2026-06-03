@@ -1,0 +1,161 @@
+# Prozessbeschreibung: Einkauf von Waren für den Onlineshop
+
+## Ziel
+
+Dieser Prozess beschreibt die Beschaffung von Waren, die im Onlineshop angeboten und verkauft werden sollen. Ziel ist die bedarfsgerechte Versorgung des Lagers mit Produkten, um die Lieferfähigkeit sicherzustellen und Kundenbestellungen termingerecht bedienen zu können.
+
+## Voraussetzungen
+
+Der Einkauf von Waren erfolgt, wenn:
+
+- neue Produkte in das Sortiment aufgenommen werden sollen,
+- der Bestand bestehender Produkte einen definierten Meldebestand unterschreitet,
+- eine Absatzprognose einen erhöhten Bedarf erwarten lässt,
+- saisonale oder marketingbedingte Aktionen geplant sind.
+
+## Prozessablauf
+
+### 1. Bedarfsermittlung
+
+Das System oder ein Mitarbeiter ermittelt den Beschaffungsbedarf.
+
+**Mögliche Auslöser:**
+
+- Unterschreitung des Meldebestands
+- Prognostizierte Nachfrage
+- Einführung neuer Produkte
+- Manuelle Bedarfsanforderung
+
+**Erfasste Informationen:**
+
+- Artikelnummer
+- Produktbezeichnung
+- Aktueller Bestand
+- Geplanter Zielbestand
+- Benötigte Bestellmenge
+
+### 2. Lieferantenauswahl
+
+Für die benötigten Artikel wird ein geeigneter Lieferant ausgewählt.
+
+**Prüfkriterien:**
+
+- Verfügbarkeit der Ware
+- Einkaufspreis
+- Lieferzeit
+- Lieferzuverlässigkeit
+- Vertragskonditionen
+
+### 3. Angebotseinholung und Bewertung
+
+Sofern erforderlich, werden Angebote von einem oder mehreren Lieferanten eingeholt.
+
+**Bewertet werden:**
+
+- Preise
+- Lieferbedingungen
+- Zahlungsbedingungen
+- Mindestbestellmengen
+- Lieferzeiten
+
+### 4. Freigabe der Bestellung
+
+Vor der Bestellung erfolgt die Freigabe gemäß den internen Einkaufsrichtlinien.
+
+**Prüfkriterien:**
+
+- Budgetverfügbarkeit
+- Wirtschaftlichkeit
+- Einhaltung von Einkaufsrichtlinien
+- Vollständigkeit der Bestelldaten
+
+### 5. Erstellung der Bestellung
+
+Das Einkaufssystem erstellt eine Bestellung.
+
+Die Bestellung enthält mindestens:
+
+- Bestellnummer
+- Lieferant
+- Bestelldatum
+- Bestellte Artikel
+- Mengen
+- Preise
+- Lieferadresse
+- Zahlungsbedingungen
+
+### 6. Übermittlung der Bestellung
+
+Die Bestellung wird an den Lieferanten übermittelt.
+
+**Mögliche Übertragungswege:**
+
+- E-Mail
+- EDI
+- Lieferantenportal
+- API-Schnittstelle
+
+### 7. Bestellbestätigung
+
+Der Lieferant bestätigt den Auftrag.
+
+Geprüft werden:
+
+- Bestellte Artikel
+- Mengen
+- Preise
+- Liefertermine
+
+Abweichungen werden geklärt und dokumentiert.
+
+### 8. Wareneingang
+
+Nach Lieferung der Ware erfolgt die Wareneingangsprüfung.
+
+Geprüft werden:
+
+- Vollständigkeit der Lieferung
+- Identität der gelieferten Artikel
+- Liefermenge
+- Sichtbare Transportschäden
+- Qualität der Ware
+
+### 9. Bestandsaktualisierung
+
+Nach erfolgreicher Wareneingangsprüfung werden die Lagerbestände aktualisiert.
+
+Das System führt folgende Aktionen aus:
+
+- Erhöhung des Lagerbestands
+- Aktualisierung der Verfügbarkeit im Onlineshop
+- Kennzeichnung der Bestellung als geliefert
+
+### 10. Rechnungsprüfung
+
+Die Lieferantenrechnung wird mit Bestellung und Wareneingang abgeglichen.
+
+Geprüft werden:
+
+- Artikel
+- Mengen
+- Preise
+- Rabatte
+- Steuern
+
+Abweichungen werden an den Einkauf zur Klärung weitergeleitet.
+
+### 11. Zahlungsfreigabe und Zahlung
+
+Nach erfolgreicher Rechnungsprüfung wird die Rechnung zur Zahlung freigegeben.
+
+Das Finanzsystem führt die Zahlung gemäß den vereinbarten Zahlungsbedingungen aus.
+
+### 12. Prozessende
+
+Die Bestellung befindet sich im Status `ABGESCHLOSSEN`.
+
+Die Ware ist im Lager verfügbar und kann über den Onlineshop verkauft werden.
+
+## Ergebnis
+
+Die benötigten Waren wurden wirtschaftlich beschafft, geprüft, eingelagert und für den Verkauf im Onlineshop bereitgestellt. Lagerbestand, Verfügbarkeit und Finanzdaten wurden entsprechend aktualisiert.

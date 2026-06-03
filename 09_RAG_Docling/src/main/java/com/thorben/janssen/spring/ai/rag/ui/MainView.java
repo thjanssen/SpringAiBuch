@@ -1,6 +1,6 @@
-package com.thorben.janssen.spring.ai.tools.ui;
+package com.thorben.janssen.spring.ai.rag.ui;
 
-import com.thorben.janssen.spring.ai.tools.service.ChatService;
+import com.thorben.janssen.spring.ai.rag.service.ChatService;
 import com.vaadin.flow.component.messages.MessageInput;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,7 +13,6 @@ import org.vaadin.firitin.components.messagelist.MarkdownMessage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Route("")
 public class MainView extends VerticalLayout implements RouterLayout {
@@ -52,8 +51,6 @@ public class MainView extends VerticalLayout implements RouterLayout {
     }
 
     private VerticalLayout createTabContent(ChatService chatService) {
-        var conversationId = UUID.randomUUID();
-
         VerticalLayout messageList = new VerticalLayout();
         Scroller messageScroller = new Scroller(messageList);
         MessageInput messageInput = new MessageInput();
@@ -77,7 +74,7 @@ public class MainView extends VerticalLayout implements RouterLayout {
             messageList.add(reply);
 
             // Call ChatController to interact with LLM and stream back the reply to UI
-            chatService.chat(ev.getValue(), conversationId).subscribe(cr -> {
+            chatService.chat(ev.getValue()).subscribe(cr -> {
                 getUI().orElseThrow().access(() -> {
                     reply.appendMarkdownAsync(cr);
                     reply.scrollIntoView();

@@ -9,8 +9,6 @@ import org.springframework.ai.rag.preretrieval.query.expansion.MultiQueryExpande
 import org.springframework.ai.rag.preretrieval.query.expansion.QueryExpander;
 import org.springframework.ai.rag.preretrieval.query.transformation.CompressionQueryTransformer;
 import org.springframework.ai.rag.preretrieval.query.transformation.TranslationQueryTransformer;
-import org.springframework.ai.rag.retrieval.join.ConcatenationDocumentJoiner;
-import org.springframework.ai.rag.retrieval.join.DocumentJoiner;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -29,27 +27,26 @@ public class ChatService {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
                     SimpleLoggerAdvisor.builder().build(),
-//                    QuestionAnswerAdvisor.builder(vectorStore)
-//                            .searchRequest(SearchRequest.builder().similarityThreshold(0.6d).topK(2).build())
-//                            .build()
-                    RetrievalAugmentationAdvisor.builder()
-                            // before document retrieval
-                            .queryTransformers(
-                                    CompressionQueryTransformer.builder().chatClientBuilder(chatClientBuilder.build().mutate()).build(),
-                                    TranslationQueryTransformer.builder().chatClientBuilder(chatClientBuilder.build().mutate()).targetLanguage("english").build()
-                            )
-                            .queryExpander(MultiQueryExpander.builder().chatClientBuilder(chatClientBuilder.build().mutate()).numberOfQueries(3).includeOriginal(true).build())
-        //                    // document retrieval
-                            .documentRetriever(VectorStoreDocumentRetriever.builder().similarityThreshold(0.0d).filterExpression(new FilterExpressionBuilder().eq("topic", "process descriptions").build()).vectorStore(vectorStore).build())
-                            // document post-processing
-                            .documentPostProcessors((query, documents) -> documents)
-                            .documentJoiner(new ConcatenationDocumentJoiner())
-                            // generation
-                            .queryAugmenter(ContextualQueryAugmenter.builder().allowEmptyContext(false).build())
+                    QuestionAnswerAdvisor.builder(vectorStore)
+                            .searchRequest(SearchRequest.builder().similarityThreshold(0.6d).topK(2).build())
                             .build()
+//                    RetrievalAugmentationAdvisor.builder()
+//                            // before document retrieval
+//                            .queryTransformers(
+//                                    CompressionQueryTransformer.builder().chatClientBuilder(chatClientBuilder.clone()).build(),
+//                                    TranslationQueryTransformer.builder().chatClientBuilder(chatClientBuilder.clone()).targetLanguage("english").build()
+//                            )
+//                            .queryExpander(MultiQueryExpander.builder().chatClientBuilder(chatClientBuilder.clone()).numberOfQueries(3).includeOriginal(true).build())
+//                            // document retrieval
+//                            .documentRetriever(VectorStoreDocumentRetriever.builder().similarityThreshold(0.0d).filterExpression(new FilterExpressionBuilder().eq("topic", "Spring AI").build()).vectorStore(vectorStore).build())
+//                            // document post-processing
+//                            .documentPostProcessors((query, documents) -> documents)
+//                            // query augmenter
+//                            .queryAugmenter(ContextualQueryAugmenter.builder().allowEmptyContext(false).build())
+//                            .build()
                 )
-        .defaultSystem(SYSTEM_PROMPT)
-        .build();
+                .defaultSystem(SYSTEM_PROMPT)
+                .build();
     }
 
     public Flux<String> chat(String message) {

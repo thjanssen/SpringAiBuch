@@ -15,7 +15,6 @@ spring:
           jdbc:
             initialize-schema: always
   datasource:
-    
     url: jdbc:hsqldb:file:db/chatmemory
     username: sa
     password:

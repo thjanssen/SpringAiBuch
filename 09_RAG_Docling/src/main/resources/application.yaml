@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: RAG
+
+  ai:
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG
+          web: DEBUG

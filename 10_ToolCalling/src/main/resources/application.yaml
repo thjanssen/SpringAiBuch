@@ -8,7 +8,22 @@ spring:
         model: qwen3
     openai:
       api-key: ${MyVerySecretChatGptKey}
+    anthropic:
+      api-key: ${MyVerySecretAnthropicKey}
 
+  datasource:
+    url: jdbc:hsqldb:file:db/orderDb
+    username: sa
+    password:
+  jpa:
+    generate-ddl: true
+    properties:
+      jakarta:
+        persistence:
+          sql-load-script-source: import.sql
+          schema-generation:
+            database:
+              action: drop-and-create
 logging:
   level:
     org:
@@ -17,3 +32,8 @@ logging:
           chat:
             client:
               advisor: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: TRACE

@@ -9,35 +9,35 @@ database "VectorStore" as VectorStore
 participant "EmbeddingModel" as EmbeddingModel
 participant "ChatModel / LLM" as LLM
 
-User -> ChatClient : Prompt senden
-ChatClient -> Advisor : before(request)
+User -> ChatClient : Prompt
+ChatClient -> Advisor : adviseCall / adviseStream(...)
 
-group Before Phase
+group vor Prompt Ausführung
 
-Advisor -> VectorStore : similaritySearch(userMessage)
+Advisor -> VectorStore : similaritySearch(conversationId, userMessage)
 VectorStore -> EmbeddingModel : Embedding für userMessage erzeugen
-EmbeddingModel --> VectorStore : Embedding
+EmbeddingModel --> VectorStore : Embedding-Vektor
 VectorStore --> Advisor : relevante frühere Nachrichten
 
-Advisor -> Advisor : Prompt mit relevanter Chat History erweitern
+Advisor -> Advisor : Prompt mit relevanten Nachrichten erweitern
 
-Advisor -> VectorStore : Add userMessage
+Advisor -> VectorStore : add(conversationId, userMessage)
 VectorStore -> EmbeddingModel : Embedding für userMessage erzeugen
-EmbeddingModel --> VectorStore : Query Embedding
+EmbeddingModel --> VectorStore : Embedding-Vektor
 
 end
 
 Advisor -> LLM : erweiterter Prompt
 LLM --> Advisor : Antwort
 
-group After Phase
+group nach Prompt Ausführung
 
-Advisor -> VectorStore : Assistant Response speichern
-VectorStore -> EmbeddingModel : Embedding für neue Nachrichten erzeugen
-EmbeddingModel --> VectorStore : Embedding
+Advisor -> VectorStore : add(conversationId, assistantMessage)
+VectorStore -> EmbeddingModel : Embedding für assistantMessage erzeugen
+EmbeddingModel --> VectorStore : Embedding-Vektor
 
 end
 
 Advisor --> ChatClient : Antwort
-ChatClient --> User : Antwort anzeigen
+ChatClient --> User : Antwort
 @enduml

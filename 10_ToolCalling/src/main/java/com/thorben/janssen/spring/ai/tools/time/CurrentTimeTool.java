@@ -1,4 +1,4 @@
-package com.thorben.janssen.spring.ai.tools.tool;
+package com.thorben.janssen.spring.ai.tools.time;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;

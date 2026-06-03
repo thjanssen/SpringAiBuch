@@ -8,29 +8,23 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-	<artifactId>10_ToolCalling</artifactId>
-	<name>10_ToolCalling</name>
-    <description>Demo project for Spring AI</description>
-    <properties>
-        <spring-ai.version>2.0.0-M8</spring-ai.version>
-    </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<artifactId>09_RAG_Docling</artifactId>
+	<name>09_RAG_Docling</name>
+	<description>Backend demo project for Spring AI</description>
 
     <dependencies>
         <!-- Spring AI -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-anthropic</artifactId>
+            <artifactId>spring-ai-starter-model-openai</artifactId>
+        </dependency>
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-rag</artifactId>
+</dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-advisors-vector-store</artifactId>
         </dependency>
 
         <!-- Vaadin frontend -->
@@ -53,25 +47,26 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>io.arconia</groupId>
+            <artifactId>arconia-ai-docling-document-reader</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>runtime</scope>
+            <groupId>io.arconia</groupId>
+            <artifactId>arconia-dev-services-docling</artifactId>
+            <scope>test</scope>
         </dependency>
-
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.ai</groupId>-->
-<!--            <artifactId>spring-ai-tool-search-tool-advisor</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.ai</groupId>-->
-<!--            <artifactId>spring-ai-tool-index-vectorstore</artifactId>-->
-<!--        </dependency>-->
-
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.arconia</groupId>
+                <artifactId>arconia-bom</artifactId>
+                <version>0.27.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

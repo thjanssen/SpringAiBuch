@@ -1,0 +1,39 @@
+@startuml
+top to bottom direction
+skinparam linetype polyline
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+folder "Datenquellen" as Sources {
+  [Dokumente]
+  [Webseiten]
+  [Datenbanken]
+  [APIs]
+}
+
+package "ETL-Pipeline" as ETL {
+
+  [Extract\n(Spring AI: DocumentReader)] as Extract
+
+  [Transform\n(Spring AI: DocumentTransformer)] as Transform
+
+  [Load\n(Spring AI: DocumentWriter)] as Load
+}
+
+database "Vector Store" as Store
+
+note left of "Transform"
+- Inhalte extrahieren
+- Inhalte aufbereiten
+- Chunking
+- Metadaten anreichern
+end note
+
+Sources -down-> Extract
+Extract -down-> Transform : Dokumente
+Transform -down-> Load : Dokumente mit\nText und Metadaten
+
+Load -down-> Store : Embeddings erzeugen\nund speichern
+
+@enduml

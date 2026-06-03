@@ -5,6 +5,8 @@ spring:
   ai:
     openai:
       api-key: ${MyVerySecretChatGptKey}
+      chat:
+        model: gpt-5
 
   mvc:
     log-request-details: true

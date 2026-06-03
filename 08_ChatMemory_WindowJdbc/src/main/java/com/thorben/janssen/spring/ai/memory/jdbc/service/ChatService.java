@@ -17,13 +17,13 @@ public class ChatService {
 
     private final ChatClient chatClient;
 
-//    public ChatService(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
-//        this.chatClient = chatClientBuilder
-//                .defaultAdvisors(
-//                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
-//                        SimpleLoggerAdvisor.builder().build())
-//                .build();
-//    }
+    public ChatService(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
+        this.chatClient = chatClientBuilder
+                .defaultAdvisors(
+                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                        SimpleLoggerAdvisor.builder().build())
+                .build();
+    }
 
 //    public ChatService(ChatClient.Builder chatClientBuilder, JdbcChatMemoryRepository jdbcChatMemoryRepository) {
 //        var chatMemory = MessageWindowChatMemory.builder()
@@ -37,21 +37,21 @@ public class ChatService {
 //                .build();
 //    }
 
-public ChatService(ChatClient.Builder chatClientBuilder, JdbcTemplate jdbcTemplate, DataSource dataSource) {
-    var jdbcChatMemoryRepository = JdbcChatMemoryRepository.builder()
-            .dataSource(dataSource)
-            .jdbcTemplate(jdbcTemplate)
-            .build();
-    var chatMemory = MessageWindowChatMemory.builder()
-            .chatMemoryRepository(jdbcChatMemoryRepository)
-            .maxMessages(10)
-            .build();
-    this.chatClient = chatClientBuilder
-            .defaultAdvisors(
-                    MessageChatMemoryAdvisor.builder(chatMemory).build(),
-                    SimpleLoggerAdvisor.builder().build())
-            .build();
-}
+//public ChatService(ChatClient.Builder chatClientBuilder, JdbcTemplate jdbcTemplate, DataSource dataSource) {
+//    var jdbcChatMemoryRepository = JdbcChatMemoryRepository.builder()
+//            .dataSource(dataSource)
+//            .jdbcTemplate(jdbcTemplate)
+//            .build();
+//    var chatMemory = MessageWindowChatMemory.builder()
+//            .chatMemoryRepository(jdbcChatMemoryRepository)
+//            .maxMessages(10)
+//            .build();
+//    this.chatClient = chatClientBuilder
+//            .defaultAdvisors(
+//                    MessageChatMemoryAdvisor.builder(chatMemory).build(),
+//                    SimpleLoggerAdvisor.builder().build())
+//            .build();
+//}
 
     public Flux<String> chat(String message, String conversationId) {
         return chatClient.prompt(message)

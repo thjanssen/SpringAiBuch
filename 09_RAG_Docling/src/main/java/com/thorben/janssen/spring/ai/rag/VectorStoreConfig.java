@@ -1,12 +1,17 @@
 package com.thorben.janssen.spring.ai.rag;
 
+import ai.docling.serve.api.DoclingServeApi;
+import ai.docling.serve.api.chunk.request.options.ChunkerOptions;
+import ai.docling.serve.api.convert.request.ConvertDocumentRequest;
+import ai.docling.serve.api.convert.request.options.ConvertDocumentOptions;
+import ai.docling.serve.api.convert.request.source.FileSource;
+import ai.docling.serve.api.convert.response.ConvertDocumentResponse;
+import io.arconia.ai.document.docling.DoclingDocumentReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.reader.TextReader;
-import org.springframework.ai.reader.markdown.MarkdownDocumentReader;
-import org.springframework.ai.reader.markdown.config.MarkdownDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
@@ -22,18 +27,24 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Configuration
 public class VectorStoreConfig {
 
     private static final Logger log = LoggerFactory.getLogger(VectorStoreConfig.class);
+    private final DoclingServeApi doclingServeApi;
 
     @Value("vector_store.json")
     private String vectorStoreName;
 
     @Autowired
     private ResourcePatternResolver resourcePatternResolver;
+
+    public VectorStoreConfig(DoclingServeApi doclingServeApi) {
+        this.doclingServeApi = doclingServeApi;
+    }
 
     @Bean
     SimpleVectorStore simpleVectorStore(EmbeddingModel embeddingModel) throws IOException {
@@ -44,19 +55,13 @@ public class VectorStoreConfig {
             simpleVectorStore.load(vectorStoreFile);
         } else {
             log.info("Vector Store File Does Not Exist, loading documents");
-
-            for (var inputFile : getInputFiles()) {
-                var readerConfig = MarkdownDocumentReaderConfig.builder()
-                        .withAdditionalMetadata("filename", inputFile.getFilename())
-                        .withAdditionalMetadata("topic", "process descriptions")
-                        .build();
-                var reader = new MarkdownDocumentReader(inputFile, readerConfig);
-                var documents = reader.get();
-                var textSplitter = TokenTextSplitter.builder().build();
-                var splitDocuments = textSplitter.apply(documents);
-                simpleVectorStore.add(splitDocuments);
-                simpleVectorStore.save(vectorStoreFile);
-            }
+            var documents = DoclingDocumentReader.builder()
+                    .doclingServeApi(doclingServeApi)
+                    .files(getInputFiles())
+                    .build()
+                    .get();
+            simpleVectorStore.add(documents);
+            simpleVectorStore.save(vectorStoreFile);
         }
         return simpleVectorStore;
     }
