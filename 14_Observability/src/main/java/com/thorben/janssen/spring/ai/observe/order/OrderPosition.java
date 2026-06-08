@@ -1,7 +1,6 @@
-package com.thorben.janssen.spring.ai.tools.order;
+package com.thorben.janssen.spring.ai.observe.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vaadin.pro.licensechecker.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

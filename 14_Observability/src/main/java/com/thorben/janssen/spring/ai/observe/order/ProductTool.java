@@ -1,8 +1,7 @@
-package com.thorben.janssen.spring.ai.tools.order;
+package com.thorben.janssen.spring.ai.observe.order;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,12 +10,12 @@ public class ProductTool {
 
     private static final List<String> products = List.of("Bleistift", "Papier", "Kugelschreiber");
 
-//    @Tool(name = "getProducts", description = "Get all available products.")
+    @Tool(name = "getProducts", description = "Get all available products.")
     public List<String> getProducts() {
         return products;
     }
 
-//    @Tool(name = "checkProductAvailability", description = "Checks if a product is available for purchase.")
+    @Tool(name = "checkProductAvailability", description = "Checks if a product is available for purchase.")
     public boolean checkProductAvailability(String product) {
         return products.contains(product);
     }

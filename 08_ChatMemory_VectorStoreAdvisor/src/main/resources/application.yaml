@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ChatMemory_VectorStoreAdvisor
+    name: 08_ChatMemory_VectorStoreAdvisor
 
   ai:
     openai:

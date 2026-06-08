@@ -1,5 +1,7 @@
-package com.thorben.janssen.spring.ai.tools.order;
+package com.thorben.janssen.spring.ai.observe.order;
 
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import org.slf4j.Logger;
@@ -21,9 +23,14 @@ public class OrderTool {
     private final OrderRepository orderRepository;
     private final OrderPositionRepository orderPositionRepository;
 
-    public OrderTool(OrderRepository orderRepository, OrderPositionRepository orderPositionRepository) {
+    private final ObservationRegistry observationRegistry;
+    private final DistributionSummary distributionSummary;
+
+    public OrderTool(OrderRepository orderRepository, OrderPositionRepository orderPositionRepository, ObservationRegistry observationRegistry, MeterRegistry meterRegistry) {
         this.orderRepository = orderRepository;
         this.orderPositionRepository = orderPositionRepository;
+        this.observationRegistry = observationRegistry;
+        this.distributionSummary = DistributionSummary.builder("order.numOrderPositions").register(meterRegistry);
     }
 
     @Tool(name = "getOrder", description = "Get information about the order with the given id. This includes the name of the customer and all order positions with their items and ordered quantity")
@@ -48,22 +55,32 @@ public class OrderTool {
 
     @Tool(name="createOrder", description = "Creates a new order and returns its id.")
     public Order createOrder(@ToolParam(description = "The name of the customer") String customer) {
-        var order = new Order();
-        order.setCustomerName(customer);
-        order.setOrderStatus(OrderStatus.OPEN);
-        orderRepository.save(order);
-        return order;
+        return Observation.createNotStarted("order.management", observationRegistry)
+                .lowCardinalityKeyValue("order.status", "open")
+                .observe(() -> {
+                    var order = new Order();
+                    order.setCustomerName(customer);
+                    order.setOrderStatus(OrderStatus.OPEN);
+                    orderRepository.save(order);
+                    return order;
+                });
     }
 
     @Tool(name="placeOrder", description = "Places the order. A placed order can't be changed.")
     public boolean placeOrder(@ToolParam(description = "The id of the order") Long orderId) {
-        return orderRepository.findById(orderId)
-                .map(order -> {
-                    order.setOrderStatus(OrderStatus.PLACED);
-                    order.setOrderDate(LocalDate.now());
-                    return true;
-                })
-                .orElse(false);
+
+        return Observation
+                .createNotStarted("order.management", observationRegistry)
+                .lowCardinalityKeyValue("order.status", "placed")
+                .observe(() -> {
+                            var order = orderRepository.findOrderWithItems(orderId);
+
+                            distributionSummary.record(order.getOrderPositions().size());
+
+                            order.setOrderStatus(OrderStatus.PLACED);
+                            order.setOrderDate(LocalDate.now());
+                            return true;
+                        });
     }
 
     @Tool(name="addOrderPosition", description = "Adds an order position for the product with the given id and quantity to the order.")
@@ -71,14 +88,14 @@ public class OrderTool {
             @ToolParam(description = "The id of the order to which you want to add the product") Long orderId,
             @ToolParam(description = "The name of the prudct you want to add") String product,
             @ToolParam(description = "The quantity in which you want to order the product") int quantity) {
-//        if (new ProductTool().checkProductAvailability(product)) {
-//            throw new IllegalArgumentException(String.format("The product %s is not available for this order.", product));
-//        }
+        if (new ProductTool().checkProductAvailability(product)) {
+            throw new IllegalArgumentException(String.format("The product %s is not available for this order.", product));
+        }
 
         var order = orderRepository.findById(orderId).get();
 
         var orderPosition = new OrderPosition();
-//        orderPosition.setProduct(product);
+        orderPosition.setProduct(product);
         orderPosition.setQuantity(quantity);
         orderPosition.setOrder(order);
         orderPositionRepository.save(orderPosition);

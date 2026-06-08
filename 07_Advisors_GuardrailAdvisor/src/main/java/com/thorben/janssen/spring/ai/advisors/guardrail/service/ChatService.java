@@ -25,7 +25,7 @@ public class ChatService {
         this.moderationModel = moderationModel;
         this.chatClientBuilder = chatClientBuilder;
         this.chatClient = chatClientBuilder
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().requestToString(ModelOptionsUtils::toJsonStringPrettyPrinter).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 .build();
     }
 

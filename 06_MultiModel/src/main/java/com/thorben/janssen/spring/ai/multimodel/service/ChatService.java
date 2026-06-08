@@ -34,7 +34,7 @@ public class ChatService {
                        TextToSpeechModel speechModel) {
         this.moderationModel = moderationModel;
         this.chatClient = generalChatClientBuilder
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().requestToString(ModelOptionsUtils::toJsonStringPrettyPrinter).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 .build();
         this.relevancyCheckChatClientBuilder = relevancyCheckChatClientBuilder;
         this.speechModel = speechModel;

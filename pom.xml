@@ -31,7 +31,7 @@
     <properties>
         <java.version>21</java.version>
         <vaadin.version>25.0.0</vaadin.version>
-        <spring-ai.version>2.0.0-SNAPSHOT</spring-ai.version>
+        <spring-ai.version>2.0.0-RC1</spring-ai.version>
     </properties>
 
 	<dependencyManagement>
@@ -113,5 +113,7 @@
         <module>09_RAG</module>
         <module>09_RAG_Docling</module>
         <module>10_ToolCalling</module>
+
+        <module>14_Observability</module>
     </modules>
 </project>

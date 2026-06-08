@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: 14_Observability
+
+  ai:
+    ollama:
+      chat:
+        model: qwen3
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+
+
+    chat:
+      client:
+        observations:
+          log-prompt: true
+          log-completion: true
+    tools:
+      observations:
+        include-content: true
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              observation: DEBUG
+#          web: DEBUG
+
+
+#server:
+#  error:
+#    include-message: always
+
+management:
+  observations:
+    enable:
+      spring:
+        ai: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics, info
+
+
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,prometheus
+#  tracing:
+#    sampling:
+#      probability: 1.0
+#  otlp:
+#    tracing:
+#      endpoint: http://localhost:4318/v1/traces
