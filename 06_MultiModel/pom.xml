@@ -10,7 +10,7 @@
     </parent>
 	<groupId>com.thorben.janssen.spring.ai.buch</groupId>
 	<artifactId>06_MultiModel</artifactId>
-	<name>07_Advisors_GuardrailAdvisor</name>
+	<name>06_MultiModel</name>
 	<description>Backend demo project for Spring AI book</description>
 
 	<dependencies>

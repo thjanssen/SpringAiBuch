@@ -63,7 +63,7 @@ class SpringAiTests {
                 .modelManagementOptions(ModelManagementOptions.builder()
                                         .pullModelStrategy(PullModelStrategy.WHEN_MISSING)
                                         .build())
-                .defaultOptions(OllamaChatOptions.builder()
+                .options(OllamaChatOptions.builder()
                                 .model("bespoke-minicheck")
                                 .temperature(0.0d)
                                 .topP(1d)

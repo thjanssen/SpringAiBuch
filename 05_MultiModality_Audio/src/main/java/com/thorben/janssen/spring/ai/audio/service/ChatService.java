@@ -38,7 +38,7 @@ public class ChatService {
         var speechPrompt = new TextToSpeechPrompt(response,
                 DefaultTextToSpeechOptions.builder()
                         .voice("shimmer")
-                        .format("MP3")
+                        .format("mp3")
                         .build());
         byte[] audio = speechModel.call(speechPrompt).getResult().getOutput();
 

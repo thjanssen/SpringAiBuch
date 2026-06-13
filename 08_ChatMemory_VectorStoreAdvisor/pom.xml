@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.thorben.janssen.spring.ai.buch</groupId>
     <artifactId>08_ChatMemory_VectorStoreAdvisor</artifactId>
-    <name>ChatMemory_VectorStoreAdvisor</name>
+    <name>08_ChatMemory_VectorStoreAdvisor</name>
     <description>Demo project for Spring AI</description>
 
     <dependencies>

@@ -20,19 +20,19 @@ public class TestcontainersConfiguration {
         Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(LoggerFactory.getLogger(TestcontainersConfiguration.class));
 
         // Startet ein Image mit Ollama ohne installiertes Modell
-        var ollamaContainer = new OllamaContainer("ollama/ollama");
-        ollamaContainer.withLogConsumer(logConsumer);
-        ollamaContainer.start();
-        // Installiert das bespoke-minicheck innerhalb des Containers
-        ollamaContainer.execInContainer("ollama", "pull", "bespoke-minicheck");
-        // Optional: Erstellt ein wiederverwendbares Image dieses Containers
-        ollamaContainer.commitToImage("ollama/bespoke-minicheck");
+//        var ollamaContainer = new OllamaContainer("ollama/ollama");
+//        ollamaContainer.withLogConsumer(logConsumer);
+//        ollamaContainer.start();
+//        // Installiert das bespoke-minicheck innerhalb des Containers
+//        ollamaContainer.execInContainer("ollama", "pull", "bespoke-minicheck");
+//        // Optional: Erstellt ein wiederverwendbares Image dieses Containers
+//        ollamaContainer.commitToImage("ollama/bespoke-minicheck");
 
 
         // Startet ein vorher erstelltes Image mit Ollama und bespoke-mini
-//        var ollamaContainer = new OllamaContainer(DockerImageName.parse("ollama/bespoke-minicheck").asCompatibleSubstituteFor("ollama/ollama"));
-//        ollamaContainer.withLogConsumer(logConsumer);
-//        ollamaContainer.start();
+        var ollamaContainer = new OllamaContainer(DockerImageName.parse("ollama/bespoke-minicheck").asCompatibleSubstituteFor("ollama/ollama"));
+        ollamaContainer.withLogConsumer(logConsumer);
+        ollamaContainer.start();
 
         return ollamaContainer;
     }

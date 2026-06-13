@@ -15,6 +15,7 @@ ChatClient -> Advisor : adviseCall / adviseStream(...)
 Advisor -> VectorStore : similaritySearch(userMessage)
 VectorStore -> EmbeddingModel : Embedding für userMessage erzeugen
 EmbeddingModel --> VectorStore : Embedding
+VectorStore -> VectorStore : Ähnlichkeitssuche mit Embedding
 VectorStore --> Advisor : relevante Dokumentenabschnitte
 
 Advisor -> Advisor : Kontext in Prompt einfügen

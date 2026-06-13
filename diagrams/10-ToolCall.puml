@@ -14,18 +14,24 @@ participant "Tool" as Tool
 User -> Client : Prompt senden
 Client -> Advisor : adviseCall / adviseStream(...)
 
-Advisor -> Model : Prompt mit Tool-Definitionen
-
 loop bis keine Tool Calls mehr vorhanden sind
+
+  Advisor -> Model : Prompt mit Tool-Definitionen\nund Conversation History
 
   alt Modell fordert Tool Call an
     Model --> Advisor : Antwort mit Tool Call
+
     Advisor -> Manager : Tool ausführen
     Manager -> Tool : call(toolInput, toolContext)
     Tool --> Manager : Tool-Ergebnis
     Manager --> Advisor : Tool-Ergebnis
-    Advisor -> Advisor : Tool-Ergebnis zur Conversation History hinzufügen
-    Advisor -> Model : Prompt mit Tool-Definitionen und Tool-Ergebnis
+
+    alt Tool-Ergebnis direkt zurückgeben
+      Advisor -> Advisor : Antwort aus Tool-Ergebnis erzeugen
+    else Tool-Ergebnis erneut an Modell senden
+      Advisor -> Advisor : Tool-Ergebnis zur Conversation History hinzufügen
+    end
+
   else keine Tool Calls
     Model --> Advisor : Antwort
   end
