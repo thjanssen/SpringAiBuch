@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 @SpringBootTest
 class ToolTests {
 
-	private static final Logger logger = LoggerFactory.getLogger(ToolTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(ToolTests.class);
 
-	@Autowired
+    @Autowired
     private ChatService chatService;
 
-	@MockitoSpyBean
-	private OrderTool orderTools;
+    @MockitoSpyBean
+    private OrderTool orderTools;
 
-	@MockitoSpyBean
-	private OrderService orderService;
+    @MockitoSpyBean
+    private OrderService orderService;
 
 	@Test
 	@WithMockUser(
@@ -56,33 +56,33 @@ class ToolTests {
 		Assertions.assertTrue(response.contains("Thorben"));
 	}
 
-	@Test
-	@WithMockUser(
-			username = "user",
-			roles = "WRONG_ROLE"
-	)
-	void testTool_missingRole() throws InterruptedException {
-		var conversationId = UUID.randomUUID();
-		var question = "Lege eine Bestellung für Thorben an.";
+    @Test
+    @WithMockUser(
+            username = "user",
+            roles = "WRONG_ROLE"
+    )
+    void testTool_missingRole() throws InterruptedException {
+        var conversationId = UUID.randomUUID();
+        var question = "Lege eine Bestellung für Thorben an.";
 
-		var response = chatService.chat(question, conversationId).collect(Collectors.joining()).block();
-		logger.info(response);
+        var response = chatService.chat(question, conversationId).collect(Collectors.joining()).block();
+        logger.info(response);
 
-		// Validiere den Aufruf
-		then(orderTools).should(times(1)).createOrder("Thorben");
-		then(orderService).should(never()).createOrder("Thorben");
-	}
+        // Validiere den Aufruf
+        then(orderTools).should(times(1)).createOrder("Thorben");
+        then(orderService).should(never()).createOrder("Thorben");
+    }
 
-	@Test
-	void testTool_noUser() throws InterruptedException {
-		var conversationId = UUID.randomUUID();
-		var question = "Lege eine Bestellung für Thorben an.";
+    @Test
+    void testTool_noUser() throws InterruptedException {
+        var conversationId = UUID.randomUUID();
+        var question = "Lege eine Bestellung für Thorben an.";
 
-		var response = chatService.chat(question, conversationId).collect(Collectors.joining()).block();
-		logger.info(response);
+        var response = chatService.chat(question, conversationId).collect(Collectors.joining()).block();
+        logger.info(response);
 
-		// Validiere den Aufruf
-		then(orderTools).should(times(1)).createOrder("Thorben");
-		then(orderService).should(never()).createOrder("Thorben");
-	}
+        // Validiere den Aufruf
+        then(orderTools).should(times(1)).createOrder("Thorben");
+        then(orderService).should(never()).createOrder("Thorben");
+    }
 }
