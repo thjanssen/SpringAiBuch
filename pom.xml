@@ -105,6 +105,7 @@
         <module>10_ToolCalling_ToolSearchTool</module>
         <module>10_ToolCalling_Security</module>
         <module>10_ToolCalling_HumanLoop</module>
+        <module>11_AgenticRAG</module>
         <module>14_Observability</module>
     </modules>
 </project>
