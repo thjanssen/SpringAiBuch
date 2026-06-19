@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: 12_MCPServer_Web
+
+  ai:
+    mcp:
+      server:
+        type: sync
+        protocol: streamable
+        annotation-scanner:
+          enabled: true   # =default
+
+logging:
+  pattern:
+    level:
+      org:
+        springframework:
+          ai: DEBUG
+          web: DEBUG
+        hibernate:
+          SQL: DEBUG
+          type:
+            descriptor:
+              sql: TRACE
+      io:
+        modelcontextprotocol:
+          server: DEBUG
+
+server:
+  error:
+    include-message: always
+  port: 7070

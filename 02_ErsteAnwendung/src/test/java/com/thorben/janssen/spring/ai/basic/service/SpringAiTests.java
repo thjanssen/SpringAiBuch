@@ -19,7 +19,7 @@ class SpringAiTests {
 
 	@Test
 	void test() {
-        var question = "Describe Spring AI in 5 sentences";
+        var question = "Beschreibe Spring AI in 5 Sätzen.";
         var response = chatService.chat(question).collect(Collectors.joining()).block();
         logger.info(response);
 

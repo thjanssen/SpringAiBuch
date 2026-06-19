@@ -1,0 +1,65 @@
+@startuml
+'top to bottom direction
+'left to right direction
+skinparam linetype ortho
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+
+rectangle "KI-Modell" as Models
+
+rectangle " " as RemoteSystem1 {
+
+  component "Spring AI\nMCP Server" as Remote1
+  component "Eigenes\nExternes\nSystem" as ExtSystem1
+
+  Remote1 --> ExtSystem1
+}
+
+rectangle " " as RemoteSystem2 {
+
+  component "MCP Server" as Remote2
+  component "Fremdes\nExternes\nSystem" as ExtSystem2
+
+  Remote2 --> ExtSystem2
+
+}
+
+rectangle "Eigenes System" as Computer {
+
+  component "Spring AI\nApplication" as App
+
+  component "Spring AI\nMCP Client" as ClientRemote1
+  component "Spring AI\nMCP Client" as ClientRemote2
+  component "Spring AI\nMCP Client" as ClientFile
+  component "Spring AI\nMCP Client" as ClientSql
+
+  component "MCP Server" as Filesystem
+  component "Spring AI\nMCP Server" as SQL
+
+  folder "Lokale Dateien" as Folders
+  database "Datenbank" as Db
+
+  App --> ClientRemote1
+  App --> ClientRemote2
+  App --> ClientFile
+  App --> ClientSql
+
+  ClientRemote1 -(0- Remote1 : Streamable-\nHTTP
+  ClientRemote2 -(0- Remote2 : Streamable-\nHTTP
+
+  ClientFile -(0- Filesystem : StdIO
+  ClientSql -(0- SQL : StdIO
+
+  Filesystem --> Folders
+  SQL --> Db
+}
+
+Models <--> App
+
+'Models -[hidden]down-> Computer
+Folders -[hidden]down-> RemoteSystem1
+Db -[hidden]down-> RemoteSystem2
+
+@enduml
