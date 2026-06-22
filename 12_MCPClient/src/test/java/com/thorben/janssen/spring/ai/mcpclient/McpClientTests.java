@@ -52,7 +52,7 @@ class McpClientTests {
 
 	@Test
 	void testMcpTool() {
-        var question = "Lege eine Bestellung für Thorben an.";
+        var question = "Lege eine Bestellung an.";
         var response = chatService.chat(question, UUID.randomUUID()).collect(Collectors.joining()).block();
         logger.info(response);
 
@@ -77,6 +77,15 @@ class McpClientTests {
     }
 
     @Test
+    void testProductNameCompletion() {
+        var completions = chatService.completeProductName("Blei");
+
+        Assertions.assertNotNull(completions);
+        Assertions.assertEquals(1, completions.size());
+        Assertions.assertEquals("Bleistift", completions.get(0));
+    }
+
+    @Test
     void testGetOrderSummaryPrompt() {
         var prompt = chatService.getOrderSummaryPrompt(1L);
 
@@ -84,4 +93,12 @@ class McpClientTests {
         logger.info(prompt.role().name()+ ": "+prompt.content().toString());
     }
 
+    @Test
+    void testOrderIdCompletion() {
+        var completions = chatService.completeOrderId("1");
+
+        Assertions.assertNotNull(completions);
+        Assertions.assertEquals(1, completions.size());
+        Assertions.assertEquals("1", completions.get(0));
+    }
 }

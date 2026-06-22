@@ -26,8 +26,8 @@ public class ChatService {
     private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     private static final String SYSTEM_PROMPT = """
-        You are a friendly and helpful senior Java developer.
-        """;
+                    Du bist ein freundlicher Support Mitarbeiter, der die Kunden bei Servicefragen zu ihren Bestellungen unterstützt.
+                    """;
 
     private final ChatClient chatClient;
 
@@ -50,6 +50,7 @@ public class ChatService {
     public Flux<String> chat(String message, UUID conversationId) {
         return chatClient.prompt(message)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .toolContext(Map.of("progressToken", UUID.randomUUID().toString()))
                 .stream()
                 .content();
     }
@@ -69,13 +70,27 @@ public class ChatService {
     public byte[] getProductImage(String productName) {
         mcpClient.listResources().resources().forEach(r -> logger.info("Resource {} ist unter {} abrufbar.", r.name(), r.uri()));
         var result = mcpClient.readResource(
-                new McpSchema.ReadResourceRequest("image://product/"+productName));
+                new McpSchema.ReadResourceRequest("product-image://"+productName));
         var content = result.contents().getFirst();
 
         if (content instanceof McpSchema.BlobResourceContents blob) {
             return Base64.getDecoder().decode(blob.blob());
         }
         return null;
+    }
+
+    public List<String> completeProductName(String productName) {
+        var result = mcpClient.completeCompletion(
+                new McpSchema.CompleteRequest(new McpSchema.ResourceReference("product-image://{productName}"),
+                        new McpSchema.CompleteRequest.CompleteArgument("productName", productName)));
+        return result.completion().values();
+    }
+
+    public List<String> completeOrderId(String orderId) {
+        var result = mcpClient.completeCompletion(
+                new McpSchema.CompleteRequest(new McpSchema.PromptReference("orderSummary"),
+                        new McpSchema.CompleteRequest.CompleteArgument("orderId", orderId)));
+        return result.completion().values();
     }
 
     public McpSchema.PromptMessage getOrderSummaryPrompt(Long orderId) {

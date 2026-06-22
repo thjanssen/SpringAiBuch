@@ -3,7 +3,6 @@ package com.thorben.janssen.spring.ai.workshop.mcpserver.order;
 import io.modelcontextprotocol.spec.McpSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.mcp.annotation.McpProgressToken;
 import org.springframework.ai.mcp.annotation.McpTool;
 import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.ai.mcp.annotation.context.McpSyncRequestContext;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Transactional
@@ -47,36 +47,57 @@ public class OrderTool {
                 .orElse(false);
     }
 
-//@McpTool(name = "createOrder", description = "Lege eine neue Bestellung an und gebe die ID zurück.")
-//public Order createOrder(String customer,
-//                         McpSyncRequestContext mcpSyncRequestContext) {
-////    var progressToken = mcpSyncRequestContext.request().progressToken();
-//    var progressToken = "myToken";
-//    mcpSyncRequestContext.debug("Beginne eine Bestellung anzulegen.");
-//    mcpSyncRequestContext.progress(McpSchema.ProgressNotification.builder(progressToken, 0).total(100D).message("Beginne eine Bestellung anzulegen.").build());
-//
-//    var order = new Order();
-//    order.setCustomerName(customer);
-//    order.setOrderStatus(OrderStatus.OPEN);
-//
-//    mcpSyncRequestContext.progress(p -> p.progress(50).total(100).message("Bestellung wird erstellt."));
-//    orderRepository.save(order);
-//    mcpSyncRequestContext.progress(100);
-//    mcpSyncRequestContext.info("Bestellung angelegt.");
-//    return order;
-//}
-
 @McpTool(name = "createOrder", description = "Lege eine neue Bestellung an und gebe die ID zurück.")
-public McpSchema.CallToolResult createOrder(String customer, McpSchema.CallToolRequest request) {
-    request.arguments().entrySet().forEach(entry -> logger.info(entry.getKey() + " " + entry.getValue()));
+public Order createOrder(@McpToolParam(required = false) String customer,
+                         McpSyncRequestContext mcpSyncRequestContext) {
+    mcpSyncRequestContext.sessionId();
+    mcpSyncRequestContext.requestMeta().forEach((k, v) -> logger.info(k + ": " + v));
+
+
+    var progressToken = mcpSyncRequestContext.request().progressToken();
+    mcpSyncRequestContext.debug("Beginne eine Bestellung anzulegen.");
+    mcpSyncRequestContext.progress(McpSchema.ProgressNotification.builder(progressToken, 0).total(100D).message("Beginne eine Bestellung anzulegen.").build());
+
+    if ((customer == null || customer.isEmpty())
+            && mcpSyncRequestContext.elicitEnabled()) {
+        logger.info("Kunde fehlt. Start Elicitation Request.");
+        var elicitResult = mcpSyncRequestContext.elicit(Customer.class);
+        if (elicitResult.action() == McpSchema.ElicitResult.Action.ACCEPT) {
+            customer = elicitResult.structuredContent().name();
+        } else {
+            throw new IllegalArgumentException("Kunden fehlt");
+        }
+    } else {
+        logger.info("Elicitation wird nicht unterstützt");
+        throw new IllegalArgumentException("Kunden fehlt");
+    }
 
     var order = new Order();
     order.setCustomerName(customer);
     order.setOrderStatus(OrderStatus.OPEN);
 
+    mcpSyncRequestContext.progress(p -> p.progress(50).total(100).message("Bestellung wird erstellt."));
     orderRepository.save(order);
-    return McpSchema.CallToolResult.builder().structuredContent(order).build();
+    mcpSyncRequestContext.progress(100);
+    mcpSyncRequestContext.info("Bestellung angelegt.");
+
+    var sampleResult = mcpSyncRequestContext.sample("Summarize this order: "+order);
+    logger.info("SamplingResult: "+sampleResult);
+
+    return order;
 }
+
+//    @McpTool(name = "createOrder", description = "Lege eine neue Bestellung an und gebe die ID zurück.")
+//    public McpSchema.CallToolResult createOrder(String customer, McpSchema.CallToolRequest request) {
+//        request.arguments().entrySet().forEach(entry -> logger.info(entry.getKey() + " " + entry.getValue()));
+//
+//        var order = new Order();
+//        order.setCustomerName(customer);
+//        order.setOrderStatus(OrderStatus.OPEN);
+//
+//        orderRepository.save(order);
+//        return McpSchema.CallToolResult.builder().structuredContent(order).build();
+//    }
 
     @McpTool(description = "Schließt die Bestellung ab. Eine abgeschlossene Bestellung kann nicht mehr storniert werden.")
     public boolean placeOrder(@McpToolParam(description = "Die ID der Bestellung") Long orderId) {

@@ -1,44 +1,38 @@
 package com.thorben.janssen.spring.ai.workshop.mcpserver.docs;
 
-import com.thorben.janssen.spring.ai.workshop.mcpserver.order.Order;
 import com.thorben.janssen.spring.ai.workshop.mcpserver.order.OrderTool;
 import io.modelcontextprotocol.spec.McpSchema;
+import org.springframework.ai.mcp.annotation.McpComplete;
 import org.springframework.ai.mcp.annotation.McpResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MimeType;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 @Component
 public class Resources {
 
-    private final OrderTool orderTool;
-
-    public Resources(OrderTool orderTool) {
-        this.orderTool = orderTool;
-    }
-
     @McpResource(
-            uri = "document://agb"
-    //        name = "AGB",
-    //        description = "Allgemeine Geschäftsbedingungen des Onlineshops",
-    //        mimeType = "text/markdown"
+            uri = "document://agb",
+            name = "AGB",
+            description = "Allgemeine Geschäftsbedingungen des Onlineshops",
+            mimeType = "text/markdown"
             )
-    public String agb() throws IOException {
+    public McpSchema.TextResourceContents agb() throws IOException {
         var resource = new ClassPathResource("documents/agb.md");
-        return resource.getContentAsString(StandardCharsets.UTF_8);
+//        return resource.getContentAsString(StandardCharsets.UTF_8);
+        return McpSchema.TextResourceContents.builder("document://agb", resource.getContentAsString(StandardCharsets.UTF_8)).build();
     }
 
     @McpResource(
-            uri = "image://product/{productName}",
+            uri = "product-image://{productName}",
             name = "ProductImage",
             description = "Lade das Bild zu einem Produkt.",
-            mimeType = "application/json")
+            mimeType = "image/png")
     public McpSchema.BlobResourceContents getProductImage(String productName) throws IOException {
         ClassPathResource imageResource;
         switch (productName) {
@@ -59,5 +53,13 @@ public class Resources {
         return new McpSchema.BlobResourceContents("image://product/"+productName,
                 "image/png",
                 Base64.getEncoder().encodeToString(image));
+    }
+
+    @McpComplete(uri = "product-image://{productName}")
+    public List<String> completeProductName(String productName) {
+        return Arrays.stream(new String[]{"Bleistift", "Kugelschreiber", "Papier"})
+                .filter(product -> product.toLowerCase().startsWith(productName.toLowerCase()))
+                .limit(10)
+                .toList();
     }
 }

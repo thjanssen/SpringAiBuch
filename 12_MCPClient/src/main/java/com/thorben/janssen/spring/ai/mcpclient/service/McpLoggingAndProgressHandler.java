@@ -12,7 +12,7 @@ public class McpLoggingAndProgressHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(McpLoggingAndProgressHandler.class);
 
-    @McpLogging(clients = "server1")
+    @McpLogging(clients = "http1")
     public void handleLogMessage(McpSchema.LoggingMessageNotification loggingNotification) {
         logger.info("""
                 Received log message from server.
@@ -22,7 +22,7 @@ public class McpLoggingAndProgressHandler {
                 loggingNotification.level(), loggingNotification.logger(), loggingNotification.data());
     }
 
-    @McpProgress(clients = "server1")
+    @McpProgress(clients = "http1")
     public void handleProgress(McpSchema.ProgressNotification progressNotification) {
         logger.info("""
                 Received progress message from server.

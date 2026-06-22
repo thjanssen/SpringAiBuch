@@ -8,7 +8,9 @@ spring:
         type: sync
         protocol: streamable
         annotation-scanner:
-          enabled: true   # =default
+          enabled: true       # (default)
+        streamable-http:
+          mcp-endpoint: /mcp  # (default)
 
 logging:
   pattern:
