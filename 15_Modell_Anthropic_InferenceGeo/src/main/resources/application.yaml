@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: 15_Modell_Anthropic_InferenceGeo
+
+  ai:
+    anthropic:
+      api-key: ${MyVerySecretAnthropicKey}
+      chat:
+        model: claude-opus-4-6
+        inference-geo: global
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG

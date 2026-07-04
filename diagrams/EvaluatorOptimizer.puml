@@ -1,0 +1,30 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor Nutzer
+participant Anwendung
+participant "Generator\nChatModel" as Generator
+participant "Evaluator\nChatModel" as Evaluator
+
+Nutzer -> Anwendung : Löse Aufgabe
+
+Anwendung -> Generator : Löse Aufgabe
+Generator --> Anwendung : Ergebnis
+
+loop Bis Bewertung erfolgreich\noder maximale Anzahl Versuche erreicht
+
+    Anwendung -> Evaluator : Bewerte Ergebnis
+    Evaluator --> Anwendung : Bewertung und\nVerbesserungsvorschläge
+
+    alt Bewertung nicht erfolgreich
+        Anwendung -> Generator : Überarbeite Ergebnis\nunter Berücksichtigung\nder Bewertung
+        Generator --> Anwendung : Ergebnis
+    else Bewertung erfolgreich
+    end
+
+end
+
+Anwendung --> Nutzer : Finales Ergebnis
+
+@enduml

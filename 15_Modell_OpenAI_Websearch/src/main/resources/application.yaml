@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: 15_Modell_OpenAI_Websearch
+
+  ai:
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+      chat:
+        model: gpt-5-search-api
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG

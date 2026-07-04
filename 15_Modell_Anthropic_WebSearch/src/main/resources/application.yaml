@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: 15_Modell_Anthropic_PromptCaching
+
+  ai:
+    anthropic:
+      api-key: ${MyVerySecretAnthropicKey}
+      chat:
+        model: claude-sonnet-4-5
+        web-search-tool:
+#          max-uses: 3
+          allowed-domains: thorben-janssen.com
+#          blocked-domains: outdated-tutorials.com
+          user-location:
+#            city:
+#            region:
+            country: DE
+            timezone: UTC
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG

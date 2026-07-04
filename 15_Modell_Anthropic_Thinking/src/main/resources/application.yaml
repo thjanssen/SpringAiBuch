@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: 15_Modell_Anthropic_PromptCaching
+
+  ai:
+    anthropic:
+      api-key: ${MyVerySecretAnthropicKey}
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG

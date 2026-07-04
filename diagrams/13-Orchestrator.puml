@@ -1,0 +1,31 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor Entwickler
+participant Anwendung
+participant "Orchestrator\nChatModel" as Orchestrator
+participant "Security\nWorker ChatModel" as SecurityWorker
+participant "Performance\nWorker ChatModel" as PerformanceWorker
+participant "Architektur\nWorker ChatModel" as ArchitectureWorker
+
+Entwickler -> Anwendung : Pull Request analysieren
+
+Anwendung -> Orchestrator : Analysiere Pull Request\nund plane notwendige Prüfungen
+Orchestrator -> Orchestrator : Zerlege Aufgabe\nin Teilaufgaben
+
+Orchestrator -> SecurityWorker : Prüfe Sicherheitsrisiken
+SecurityWorker --> Orchestrator : Security-Bewertung
+
+Orchestrator -> PerformanceWorker : Prüfe Performance-Probleme
+PerformanceWorker --> Orchestrator : Performance-Bewertung
+
+Orchestrator -> ArchitectureWorker : Prüfe Architekturvorgaben
+ArchitectureWorker --> Orchestrator : Architektur-Bewertung
+
+Orchestrator -> Orchestrator : Fasse Bewertungen zusammen\nund priorisiere Findings
+Orchestrator --> Anwendung : Review-Ergebnis mit Empfehlungen
+
+Anwendung --> Entwickler : Review-Ergebnis anzeigen
+
+@enduml

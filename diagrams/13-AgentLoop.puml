@@ -1,0 +1,47 @@
+@startuml
+
+skinparam shadowing false
+skinparam sequenceArrowThickness 1
+skinparam responseMessageBelowArrow true
+
+actor "User" as User
+participant "ChatClient" as Client
+participant "ToolCallAdvisor" as Advisor
+participant "Nachgelagerte Advisor" as Chain
+participant "ChatModel / LLM" as Model
+participant "ToolCallingManager" as Manager
+participant "Tool" as Tool
+
+User -> Client : Prompt senden
+Client -> Advisor : adviseCall / adviseStream(...)
+
+loop bis keine Tool Calls mehr vorhanden sind
+
+  Advisor -> Chain : Prompt mit Tool-Definitionen\nund Conversation History
+  Chain -> Model : Prompt mit Tool-Definitionen\nund Conversation History
+
+  alt Modell fordert Tool Call an
+    Model --> Chain : Antwort mit Tool Call Anforderung
+    Chain --> Advisor : Antwort mit Tool Call Anforderung
+
+    Advisor -> Manager : Tool ausführen
+    Manager -> Tool : call(toolInput, toolContext)
+    Tool --> Manager : Tool-Ergebnis
+    Manager --> Advisor : Tool-Ergebnis
+
+    alt Tool-Ergebnis direkt zurückgeben
+      Advisor -> Advisor : Antwort aus Tool-Ergebnis erzeugen
+    else Tool-Ergebnis erneut an Modell senden
+      Advisor -> Advisor : Tool-Ergebnis zur Conversation History hinzufügen
+    end
+
+  else keine Tool Calls
+    Model --> Chain : Antwort
+    Chain --> Advisor : Antwort
+  end
+end
+
+Advisor --> Client : Antwort
+Client --> User : Antwort
+
+@enduml

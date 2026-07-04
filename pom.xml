@@ -110,5 +110,11 @@
         <module>12_MCPServer_Web</module>
         <module>12_MCPServer_StdIO</module>
         <module>14_Observability</module>
+        <module>15_Modell_OpenAI_Websearch</module>
+        <module>15_Modell_OpenAI_Reasoning</module>
+        <module>15_Modell_Anthropic_PromptCaching</module>
+        <module>15_Modell_Anthropic_WebSearch</module>
+        <module>15_Modell_Anthropic_Thinking</module>
+        <module>15_Modell_Anthropic_InferenceGeo</module>
     </modules>
 </project>

@@ -1,0 +1,30 @@
+package com.thorben.janssen.spring.ai.basic.service;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.stream.Collectors;
+
+@SpringBootTest
+class SpringAiTests {
+
+	private static final Logger logger = LoggerFactory.getLogger(SpringAiTests.class);
+
+	@Autowired
+    private ChatService chatService;
+
+	@Test
+	void test() {
+        var question = "Was ist laut https://github.com/spring-projects/spring-ai/releases die neuste Spring AI Version und welche Änderungen beinhaltet sie?";
+        var response = chatService.chat(question).collect(Collectors.joining()).block();
+        logger.info(response);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertFalse(response.isEmpty());
+	}
+
+}

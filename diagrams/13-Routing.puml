@@ -1,0 +1,35 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor Kunde
+participant Anwendung
+participant "Router\nChatModel" as Router
+participant "Bestellungen\nChatModel" as OrderLLM
+participant "Bestellverwaltung\n(MCP Tool)" as OrderTool
+participant "Produktberatung\nChatModel" as ProductLLM
+participant "Produktkatalog\n(MCP Tool)" as ProductTool
+participant "Marketingmaterial\n(MCP Tool)" as MarketingTool
+
+Kunde -> Anwendung : Anfrage stellen
+Anwendung -> Router : Klassifiziere Anfrage
+
+alt Anfrage betrifft Bestellung oder Reklamation
+    Router --> Anwendung : Route: Bestellungen
+    Anwendung -> OrderLLM : Beantworte Anfrage
+    OrderLLM -> OrderTool : Frage Bestelldaten ab\noder löse Aktion aus
+    OrderTool --> OrderLLM : Bestelldaten / Aktionsbestätigung
+    OrderLLM --> Anwendung : Antwort
+else Anfrage betrifft Produktauswahl
+    Router --> Anwendung : Route: Produktberatung
+    Anwendung -> ProductLLM : Beantworte Anfrage
+    ProductLLM -> ProductTool : Frage Produktinformationen ab
+    ProductTool --> ProductLLM : Produktinformationen
+    ProductLLM -> MarketingTool : Frage Marketingmaterial ab
+    MarketingTool --> ProductLLM : Marketingmaterial
+    ProductLLM --> Anwendung : Antwort
+end
+
+Anwendung --> Kunde : Antwort anzeigen
+
+@enduml

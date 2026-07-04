@@ -1,5 +1,4 @@
 @startuml
-
 'skinparam linetype ortho
 
 interface Model {

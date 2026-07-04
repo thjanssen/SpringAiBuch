@@ -1,0 +1,30 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+actor Entwickler
+participant Anwendung
+participant "Security\nChatModel" as SecurityLLM
+participant "Performance\nChatModel" as PerformanceLLM
+participant "Architektur\nChatModel" as ArchitectureLLM
+participant "Zusammenfassung\nChatModel" as SummaryLLM
+
+Entwickler -> Anwendung : Pull Request analysieren
+
+par Security Review
+    Anwendung -> SecurityLLM : Prüfe Code auf\nSicherheitsprobleme
+    SecurityLLM --> Anwendung : Security-Bewertung
+else Performance Review
+    Anwendung -> PerformanceLLM : Prüfe Code auf\nPerformance-Probleme
+    PerformanceLLM --> Anwendung : Performance-Bewertung
+else Architektur Review
+    Anwendung -> ArchitectureLLM : Prüfe Code auf\nArchitekturprobleme
+    ArchitectureLLM --> Anwendung : Architektur-Bewertung
+end
+
+Anwendung -> SummaryLLM : Fasse Bewertungen zusammen\nund priorisiere Findings
+SummaryLLM --> Anwendung : Zusammenfassung mit Empfehlungen
+
+Anwendung --> Entwickler : Review-Ergebnis anzeigen
+
+@enduml

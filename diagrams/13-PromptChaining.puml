@@ -1,0 +1,29 @@
+@startuml
+skinparam linetype ortho
+skinparam sequenceMessageAlign center
+
+participant Anwendung
+participant "ChatModel" as LLM
+participant "Kalender\n(MCP Tool)" as KalenderTool
+participant "E-Mail\n(MCP Tool)" as EmailTool
+
+Anwendung -> LLM : Erstelle Meeting-Agenda und Teilnehmerliste
+LLM --> Anwendung : Meeting-Agenda und Teilnehmerliste
+
+Anwendung -> LLM : Plane ein Meeting\nauf Basis der Agenda und Teilnehmerliste
+
+loop Für jeden Teilnehmer
+    LLM -> KalenderTool : Ermittle verfügbare Zeitfenster
+    KalenderTool --> LLM : Verfügbare Zeitfenster
+end
+
+LLM -> LLM : Ermittle gemeinsames Zeitfenster
+LLM --> Anwendung : Terminvorschlag
+
+Anwendung -> LLM : Organisiere Meeting\nmit Agenda,\nTeilnehmern und Termin
+LLM -> LLM : Generiere Einladungstext
+LLM -> EmailTool : Versende Einladung
+EmailTool --> LLM : Versandbestätigung
+LLM --> Anwendung : Meeting organisiert
+
+@enduml

@@ -28,14 +28,14 @@ public class Config {
                 .build();
     }
 
-@Bean
-ToolCallback checkProductAvailabilityTool(ProductAvailabiltyCheck productAvailabiltyCheck) {
-    return FunctionToolCallback
-            .builder("checkProductAvailability", productAvailabiltyCheck)
-            .description("Prüft die Verfügbarkeit eines Produktes.")
-            .inputType(AvailabilityCheckInput.class)
-            .toolMetadata(ToolMetadata.builder().returnDirect(false).build())
-            .build();
-}
+    @Bean
+    ToolCallback checkProductAvailabilityTool(ProductAvailabiltyCheck productAvailabiltyCheck) {
+        return FunctionToolCallback
+                .builder("checkProductAvailability", productAvailabiltyCheck)
+                .description("Prüft die Verfügbarkeit eines Produktes.")
+                .inputType(AvailabilityCheckInput.class)
+                .toolMetadata(ToolMetadata.builder().returnDirect(false).build())
+                .build();
+    }
 
 }

@@ -7,18 +7,18 @@ spring:
       api-key: ${MyVerySecretChatGptKey}
     mcp:
       client:
-        streamable-http:
-          connections:
-            http1:
-              url: http://localhost:7070
-#        stdio:
-#          root-change-notification: true
+#        streamable-http:
 #          connections:
-#            stdio1:
-#              command: java
-#              args:
-#                - -jar
-#                - ../12_MCPServer_StdIO/target/12_MCPServer_StdIO-0.0.1-SNAPSHOT.jar
+#            http1:
+#              url: http://localhost:7070
+        stdio:
+          root-change-notification: true
+          connections:
+            stdio1:
+              command: java
+              args:
+                - -jar
+                - ../12_MCPServer_StdIO/target/12_MCPServer_StdIO-0.0.1-SNAPSHOT.jar
 
 
   mvc:

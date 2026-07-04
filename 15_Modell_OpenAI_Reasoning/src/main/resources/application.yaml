@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: 15_Modell_OpenAI_Reasoning
+
+  ai:
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+      chat:
+        reasoning-effort: low
+
+  mvc:
+    log-request-details: true
+
+logging:
+    level:
+      org:
+        springframework:
+          ai:
+            chat:
+              client:
+                advisor: DEBUG
