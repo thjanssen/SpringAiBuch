@@ -1,1 +1,1 @@
-Answer the following question and provide at least 1 code snippet. {question}
+Answer the following question and provide at least 1 code snippet: {question}

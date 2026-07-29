@@ -11,3 +11,9 @@ spring:
         stdio: true
         annotation-scanner:
           enabled: true   # =default
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

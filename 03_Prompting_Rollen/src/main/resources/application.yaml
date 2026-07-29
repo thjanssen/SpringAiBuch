@@ -11,7 +11,7 @@ spring:
       chat:
         model: gpt-5
         max-completion-tokens: 1500
-        temperature: 1
+        temperature: 1.0
 
   # Docker-based models using OpenAI API
 #    openai:

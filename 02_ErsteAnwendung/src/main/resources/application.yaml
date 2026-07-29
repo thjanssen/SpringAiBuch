@@ -3,13 +3,13 @@ spring:
     name: ErsteAnwendung
 
   ai:
-#    ollama:
-#      chat:
-#        model: gemma3
-#      init:
-#        pull-model-strategy: when_missing
-    openai:
-      api-key: ${MyVerySecretChatGptKey}
+    ollama:
+      chat:
+        model: qwen3:8b
+      init:
+        pull-model-strategy: when_missing
+#    openai:
+#      api-key: ${MyVerySecretChatGptKey}
 
   mvc:
     log-request-details: true

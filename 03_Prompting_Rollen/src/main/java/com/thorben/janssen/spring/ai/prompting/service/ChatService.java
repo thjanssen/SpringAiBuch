@@ -35,8 +35,9 @@ public class ChatService {
         chatClient = chatClientBuilder
                 // define model configuration
                 .defaultOptions(OpenAiChatOptions.builder()
-                        .model("gpt-5-mini")
-                        .maxCompletionTokens(1500)
+                        .model("gpt-5")
+                        .topK(10)
+//                        .maxCompletionTokens(1500)
                         .temperature(1D))
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 // specify a default system prompt

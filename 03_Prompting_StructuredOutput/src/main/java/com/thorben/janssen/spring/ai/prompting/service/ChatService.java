@@ -48,7 +48,7 @@ public class ChatService {
 //    public Flux<String> chat(String message) {
 //        ResponseEntity<ChatResponse, ClassDescriptionList> responseEntity = chatClient.prompt(message)
 //                .advisors(
-//                        new SimpleLoggerAdvisor())
+//                        SimpleLoggerAdvisor.builder().build())
 //                .call()
 //                // request structured output in JSON format
 //                .responseEntity(ClassDescriptionList.class);

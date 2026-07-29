@@ -32,3 +32,9 @@ server:
   error:
     include-message: always
   port: 7070
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

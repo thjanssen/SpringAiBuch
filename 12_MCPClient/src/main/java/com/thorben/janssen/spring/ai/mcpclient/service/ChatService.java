@@ -48,6 +48,9 @@ public class ChatService {
     }
 
     public Flux<String> chat(String message, UUID conversationId) {
+        getAgb();
+        getProductImage("Bleistift");
+        getOrderSummaryPrompt(42L);
         return chatClient.prompt(message)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
                 .toolContext(Map.of("progressToken", UUID.randomUUID().toString()))

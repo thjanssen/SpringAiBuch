@@ -30,7 +30,7 @@ public class ChatService {
 
     public Flux<String> chat(String message) {
         // Define a PromptTemplate with placeholders
-//        var promptTemplate = new PromptTemplate("Answer the following question and provide at least 1 code snippet. {question}");
+//        var promptTemplate = new PromptTemplate("Answer the following question and provide at least 1 code snippet: {question}");
 //        var promptTemplate = new PromptTemplate(userBasePrompt);
 //        var response = chatClient.prompt(
 //                    promptTemplate.create(Map.of("question", message))
