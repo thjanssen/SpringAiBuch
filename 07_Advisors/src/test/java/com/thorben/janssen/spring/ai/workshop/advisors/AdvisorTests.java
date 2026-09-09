@@ -28,7 +28,7 @@ class AdvisorTests {
 
     @Test
     void testSafeGuardAdvisor() {
-        var question = "Compare Spring AI with LangChain4J";
+        var question = "Wieviele Meter sind eine Mile?";
         var response = chatService.chatWithSafeGuard(question).collect(Collectors.joining()).block();
         logger.info(response);
 

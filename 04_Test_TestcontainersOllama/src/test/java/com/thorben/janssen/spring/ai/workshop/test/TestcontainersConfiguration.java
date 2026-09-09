@@ -29,7 +29,7 @@ public class TestcontainersConfiguration {
 //        ollamaContainer.commitToImage("ollama/bespoke-minicheck");
 
 
-        // Startet ein vorher erstelltes Image mit Ollama und bespoke-mini
+        // Startet ein vorher erstelltes Image mit Ollama und bespoke-minicheck
         var ollamaContainer = new OllamaContainer(DockerImageName.parse("ollama/bespoke-minicheck").asCompatibleSubstituteFor("ollama/ollama"));
         ollamaContainer.withLogConsumer(logConsumer);
         ollamaContainer.start();

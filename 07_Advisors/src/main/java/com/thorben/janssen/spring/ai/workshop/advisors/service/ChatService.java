@@ -27,7 +27,7 @@ public class ChatService {
 
     public Flux<String> chatWithSafeGuard(String message) {
         return chatClient.prompt(message)
-                .advisors(SafeGuardAdvisor.builder().order(5).sensitiveWords(List.of("LangChain", "LangChain4J")).build())
+                .advisors(SafeGuardAdvisor.builder().order(5).sensitiveWords(List.of("Inch", "Foot", "Yard", "Mile")).build())
                 .stream()
                 .content();
     }

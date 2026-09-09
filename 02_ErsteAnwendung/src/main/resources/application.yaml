@@ -8,8 +8,8 @@ spring:
         model: qwen3:8b
       init:
         pull-model-strategy: when_missing
-#    openai:
-#      api-key: ${MyVerySecretChatGptKey}
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
 
   mvc:
     log-request-details: true

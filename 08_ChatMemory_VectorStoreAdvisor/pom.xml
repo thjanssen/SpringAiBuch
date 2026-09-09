@@ -12,6 +12,20 @@
     <artifactId>08_ChatMemory_VectorStoreAdvisor</artifactId>
     <name>08_ChatMemory_VectorStoreAdvisor</name>
     <description>Demo project for Spring AI</description>
+    <properties>
+        <spring-ai.version>2.0.1</spring-ai.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Spring AI -->
@@ -43,6 +57,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
         </dependency>
     </dependencies>
 

@@ -25,17 +25,17 @@ public class ChatService {
 //                .build();
 //    }
 
-public ChatService(ChatClient.Builder chatClientBuilder, ChatMemoryRepository chatMemoryRepository) {
-    var chatMemory = MessageWindowChatMemory.builder()
-            .chatMemoryRepository(chatMemoryRepository)
-            .maxMessages(4)
-            .build();
-    this.chatClient = chatClientBuilder
-            .defaultAdvisors(
-                    MessageChatMemoryAdvisor.builder(chatMemory).build(),
-                    SimpleLoggerAdvisor.builder().build())
-            .build();
-}
+    public ChatService(ChatClient.Builder chatClientBuilder, ChatMemoryRepository chatMemoryRepository) {
+        var chatMemory = MessageWindowChatMemory.builder()
+                .chatMemoryRepository(chatMemoryRepository)
+                .maxMessages(4)
+                .build();
+        this.chatClient = chatClientBuilder
+                .defaultAdvisors(
+                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                        SimpleLoggerAdvisor.builder().build())
+                .build();
+    }
 
     public Flux<String> chat(String message, UUID conversationId) {
         return Flux.just(chatClient.prompt(message)
