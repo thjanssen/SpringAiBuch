@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: 13_Agents_Embabel_OrderAgent
+
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            shop:
+              url: http://localhost:7071
+
+embabel:
+  models:
+    default-llm: gpt-4.1-mini
+  agent:
+    platform:
+      # Name und Beschreibung der Plattform werden zu Name und Beschreibung auf der Agent-Card
+      name: Bestell-Agent
+      description: >-
+        Verwaltet die Bestellungen des Onlineshops. Legt Bestellungen für Kunden an, fragt Bestellungen
+        anhand der Bestellnummer oder des Kundennamens ab, fügt Produkte zu einer Bestellung hinzu oder entfernt sie,
+        schließt Bestellungen ab und storniert sie. Der Auftrag muss vollständig und eigenständig verständlich sein
+        (Kundenname, Bestellnummer, Produktnamen, Anzahl), da der Agent den bisherigen Chatverlauf nicht kennt.
+      models:
+        openai:
+          api-key: ${MyVerySecretChatGptKey}
+      # Die Tools des MCP Servers, die der Agent nutzen darf
+      tools:
+        includes:
+          order:
+            description: Bestellungen verwalten
+            tools:
+              - createOrder
+              - getOrder
+              - findByCustomer
+              - addOrderPosition
+              - removeOrderPosition
+              - placeOrder
+              - cancelOrder
+
+server:
+  port: 7072
+
+logging:
+  level:
+    com:
+      thorben:
+        janssen:
+          spring:
+            ai:
+              agents: DEBUG

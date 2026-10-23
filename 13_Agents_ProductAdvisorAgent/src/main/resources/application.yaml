@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: 13_Agents_ProductAdvisorAgent
+
+  ai:
+    openai:
+      api-key: ${MyVerySecretChatGptKey}
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            shop:
+              url: http://localhost:7071
+
+server:
+  port: 7073
+
+a2a:
+  # Das A2A SDK beendet blockierende Aufrufe standardmäßig nach 30 Sekunden.
+  # Ein Agent mit LLM-Aufrufen und Tool-Calls braucht länger.
+  blocking:
+    agent:
+      timeout:
+        seconds: 120
+  # Das A2A SDK erlaubt den Zugriff auf Tasks standardmäßig nur authentifizierten Aufrufern.
+  # Die Agenten in diesem Beispiel sind nicht abgesichert. Ohne diese Einstellung endet jeder Aufruf mit "Task not found".
+  authorization:
+    required: false
+
+logging:
+  level:
+    org:
+      springframework:
+        ai: DEBUG
+    com:
+      thorben:
+        janssen:
+          spring:
+            ai:
+              agents: DEBUG

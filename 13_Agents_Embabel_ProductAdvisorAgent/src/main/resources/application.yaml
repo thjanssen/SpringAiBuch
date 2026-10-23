@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: 13_Agents_Embabel_ProductAdvisorAgent
+
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            shop:
+              url: http://localhost:7071
+
+embabel:
+  models:
+    default-llm: gpt-4.1-mini
+  agent:
+    platform:
+      # Name und Beschreibung der Plattform werden zu Name und Beschreibung auf der Agent-Card
+      name: Produktberater-Agent
+      description: >-
+        Berät Kunden des Onlineshops bei der Produktauswahl. Sucht Produkte, stellt einzelne Produkte mit
+        Beschreibung und Preis vor und empfiehlt Produkte für einen Verwendungszweck. Legt keine Bestellungen an.
+        Der Auftrag muss eigenständig verständlich sein (Wünsche des Kunden, Verwendungszweck, Produktnamen),
+        da der Agent den bisherigen Chatverlauf nicht kennt.
+      models:
+        openai:
+          api-key: ${MyVerySecretChatGptKey}
+      # Die Tools des MCP Servers, die der Agent nutzen darf
+      tools:
+        includes:
+          product:
+            description: Produkte suchen und Produktdetails abrufen
+            tools:
+              - getProducts
+              - searchProducts
+              - getProductDetails
+
+server:
+  port: 7073
+
+logging:
+  level:
+    com:
+      thorben:
+        janssen:
+          spring:
+            ai:
+              agents: DEBUG

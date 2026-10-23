@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.thorben.janssen.spring.ai.buch</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>13_Agents_Embabel_ProductAdvisorAgent</artifactId>
+    <name>13_Agents_Embabel_ProductAdvisorAgent</name>
+    <description>Produktberater-Agent auf Basis von Embabel. Sucht und empfiehlt Produkte über den MCP Server und stellt sich anderen Agenten per A2A-Protokoll zur Verfügung.</description>
+    <dependencies>
+        <!-- Embabel Agent Plattform mit OpenAI-Modellen -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-openai</artifactId>
+        </dependency>
+        <!-- Embabel bringt die ChatClient-Autokonfiguration von Spring AI mit, aber nicht die davon benötigte Tool-Autokonfiguration -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-autoconfigure-model-tool</artifactId>
+        </dependency>
+        <!-- A2A Server: Veröffentlicht die Ziele (@AchievesGoal) des Agenten per A2A-Protokoll -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-a2a</artifactId>
+        </dependency>
+        <!-- MCP Client, um die Tools des MCP Servers zu nutzen -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-mcp-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- A2A Client, um den Agenten im Test wie ein anderer Agent aufzurufen -->
+        <dependency>
+            <groupId>io.github.a2asdk</groupId>
+            <artifactId>a2a-java-sdk-client</artifactId>
+            <version>${a2a-sdk.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.a2asdk</groupId>
+            <artifactId>a2a-java-sdk-client-transport-jsonrpc</artifactId>
+            <version>${a2a-sdk.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

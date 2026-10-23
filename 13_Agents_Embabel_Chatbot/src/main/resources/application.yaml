@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: 13_Agents_Embabel_Chatbot
+
+embabel:
+  models:
+    default-llm: gpt-4.1-mini
+  agent:
+    platform:
+      models:
+        openai:
+          api-key: ${MyVerySecretChatGptKey}
+
+# Die Agenten, an die der ChatAgent per A2A-Protokoll delegiert. Die Beschreibung der Agenten
+# holt sich der ChatAgent beim Start von der Agent-Card (<url>/a2a/.well-known/agent.json).
+agents:
+  urls:
+    - http://localhost:7072   # Bestell-Agent
+    - http://localhost:7073   # Produktberater-Agent
+
+logging:
+  level:
+    com:
+      thorben:
+        janssen:
+          spring:
+            ai:
+              agents: DEBUG
+
+server:
+  error:
+    include-message: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

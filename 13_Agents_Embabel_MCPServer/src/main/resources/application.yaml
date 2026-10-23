@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: 13_Agents_Embabel_MCPServer
+
+  ai:
+    mcp:
+      server:
+        type: sync
+        protocol: streamable
+        annotation-scanner:
+          enabled: true       # (default)
+        streamable-http:
+          mcp-endpoint: /mcp  # (default)
+
+logging:
+  level:
+    org:
+      springframework:
+        ai: DEBUG
+    io:
+      modelcontextprotocol:
+        server: DEBUG
+
+server:
+  error:
+    include-message: always
+  # Anderer Port als der MCP Server aus Kapitel 12 (7070), damit beide parallel laufen können
+  port: 7071
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

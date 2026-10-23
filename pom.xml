@@ -32,6 +32,13 @@
         <java.version>21</java.version>
         <vaadin.version>25.0.0</vaadin.version>
         <spring-ai.version>2.0.1</spring-ai.version>
+        <!-- Noch kein Release mit A2A SDK 1.4 verfügbar, deshalb der nächtliche Snapshot Build -->
+        <spring-ai-a2a.version>0.4.0-SNAPSHOT</spring-ai-a2a.version>
+        <!-- A2A Java SDK 1.x (org.a2aproject.sdk) für die Spring AI Agenten -->
+        <a2a-java-sdk.version>1.4.0.Final</a2a-java-sdk.version>
+        <!-- A2A Java SDK 0.3.x (io.github.a2asdk) für die Embabel Agenten -->
+        <a2a-sdk.version>0.3.3.Final</a2a-sdk.version>
+        <embabel-agent.version>1.5.2</embabel-agent.version>
     </properties>
 
 	<dependencyManagement>
@@ -47,6 +54,13 @@
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
                 <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.embabel.agent</groupId>
+                <artifactId>embabel-agent-dependencies</artifactId>
+                <version>${embabel-agent.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -80,6 +94,20 @@
         </plugins>
     </build>
 
+    <repositories>
+        <!-- Snapshot Builds, z.B. von Spring AI A2A -->
+        <repository>
+            <id>central-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <modules>
         <module>02_ErsteAnwendung</module>
         <module>03_Prompting_Rollen</module>
@@ -109,6 +137,14 @@
         <module>12_MCPClient</module>
         <module>12_MCPServer_Web</module>
         <module>12_MCPServer_StdIO</module>
+        <module>13_Agents_MCPServer</module>
+        <module>13_Agents_OrderAgent</module>
+        <module>13_Agents_ProductAdvisorAgent</module>
+        <module>13_Agents_Chatbot</module>
+        <module>13_Agents_Embabel_MCPServer</module>
+        <module>13_Agents_Embabel_OrderAgent</module>
+        <module>13_Agents_Embabel_ProductAdvisorAgent</module>
+        <module>13_Agents_Embabel_Chatbot</module>
         <module>14_Observability</module>
         <module>15_Modell_OpenAI_Websearch</module>
         <module>15_Modell_OpenAI_Reasoning</module>
