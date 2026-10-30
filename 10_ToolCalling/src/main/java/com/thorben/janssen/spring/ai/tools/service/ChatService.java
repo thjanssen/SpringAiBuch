@@ -2,9 +2,9 @@ package com.thorben.janssen.spring.ai.tools.service;
 
 import com.thorben.janssen.spring.ai.tools.order.OrderTool;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.session.SessionService;
+import org.springframework.ai.session.advisor.SessionAdvisors;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,14 +21,13 @@ public class ChatService {
     private final ChatClient chatClient;
 
     public ChatService(ChatClient.Builder chatClientBuilder,
-                       ChatMemory chatMemory,
+                       SessionService sessionService,
                        OrderTool orderTools,
                        ToolCallback getProductsTool,
                        ToolCallback checkProductAvailabilityTool) {
         this.chatClient = chatClientBuilder
-                .defaultAdvisors(
-                        SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultAdvisors(SessionAdvisors.builder(sessionService).build())
                 .defaultTools(orderTools, getProductsTool, checkProductAvailabilityTool)
                 .defaultSystem(SYSTEM_PROMPT)
                 .build();
@@ -36,7 +35,7 @@ public class ChatService {
 
     public Flux<String> chat(String message, UUID conversationId) {
         var response = chatClient.prompt(message)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .advisors(SessionAdvisors.session(conversationId.toString()))
                 .call();
 
         return Flux.just(response.content());

@@ -2,7 +2,6 @@ package com.thorben.janssen.spring.ai.mcpclient.service;
 
 import io.modelcontextprotocol.spec.McpSchema;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.mcp.annotation.McpSampling;

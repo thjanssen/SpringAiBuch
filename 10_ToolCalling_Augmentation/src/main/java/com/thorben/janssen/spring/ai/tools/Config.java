@@ -3,6 +3,8 @@ package com.thorben.janssen.spring.ai.tools;
 import com.thorben.janssen.spring.ai.tools.order.AvailabilityCheckInput;
 import com.thorben.janssen.spring.ai.tools.order.ProductAvailabiltyCheck;
 import com.thorben.janssen.spring.ai.tools.order.ProductTool;
+import org.springframework.ai.session.InMemorySessionRepository;
+import org.springframework.ai.session.SessionRepository;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.ai.tool.metadata.ToolMetadata;
@@ -36,6 +38,11 @@ public class Config {
                 .inputType(AvailabilityCheckInput.class)
                 .toolMetadata(ToolMetadata.builder().returnDirect(false).build())
                 .build();
+    }
+
+    @Bean
+    SessionRepository sessionRepository() {
+        return InMemorySessionRepository.builder().build();
     }
 
 }

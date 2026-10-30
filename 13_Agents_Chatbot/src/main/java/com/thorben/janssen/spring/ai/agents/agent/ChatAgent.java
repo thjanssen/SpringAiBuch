@@ -2,9 +2,9 @@ package com.thorben.janssen.spring.ai.agents.agent;
 
 import com.thorben.janssen.spring.ai.agents.a2a.RemoteAgentTools;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.session.SessionService;
+import org.springframework.ai.session.advisor.SessionAdvisors;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -46,13 +46,12 @@ public class ChatAgent {
     private final ChatClient chatClient;
 
     public ChatAgent(ChatClient.Builder chatClientBuilder,
-                     ChatMemory chatMemory,
+                     SessionService sessionService,
                      RemoteAgentTools remoteAgentTools) {
         this.chatClient = chatClientBuilder
                 .defaultSystem(SYSTEM_PROMPT)
-                .defaultAdvisors(
-                        SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultAdvisors(SessionAdvisors.builder(sessionService).build())
                 // Die anderen Agenten stehen diesem Agenten als Tools zur Verfügung. Ein Tool-Aufruf ist ein A2A-Aufruf.
                 .defaultToolCallbacks(remoteAgentTools)
                 .build();
@@ -60,7 +59,7 @@ public class ChatAgent {
 
     public Flux<String> chat(String message, UUID conversationId) {
         return chatClient.prompt(message)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .advisors(SessionAdvisors.session(conversationId.toString()))
                 .stream()
                 .content();
     }

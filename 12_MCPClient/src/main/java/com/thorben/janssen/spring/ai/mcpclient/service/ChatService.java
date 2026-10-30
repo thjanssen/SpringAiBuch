@@ -5,9 +5,9 @@ import io.modelcontextprotocol.spec.McpSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.session.SessionService;
+import org.springframework.ai.session.advisor.SessionAdvisors;
 import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +34,12 @@ public class ChatService {
     private McpSyncClient mcpClient;
 
     public ChatService(ChatClient.Builder chatClientBuilder,
-                       ChatMemory chatMemory,
+                       SessionService sessionService,
                        ToolCallbackProvider toolCallbackProvider,
                        List<McpSyncClient> mcpClients) {
         this.chatClient = chatClientBuilder
-                .defaultAdvisors(
-                        SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultAdvisors(SessionAdvisors.builder(sessionService).build())
                 .defaultTools(toolCallbackProvider)
                 .defaultSystem(SYSTEM_PROMPT)
                 .build();
@@ -52,7 +51,7 @@ public class ChatService {
         getProductImage("Bleistift");
         getOrderSummaryPrompt(42L);
         return chatClient.prompt(message)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .advisors(SessionAdvisors.session(conversationId.toString()))
                 .toolContext(Map.of("progressToken", UUID.randomUUID().toString()))
                 .stream()
                 .content();

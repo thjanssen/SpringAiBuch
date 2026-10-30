@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.AdvisorParams;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.ChatClientResponse;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.session.SessionService;
+import org.springframework.ai.session.advisor.SessionAdvisors;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -44,13 +44,12 @@ public class ChatService {
     private final Map<UUID, ToolExecution> pendingToolExecutions = new HashMap<>();
 
     public ChatService(ChatClient.Builder chatClientBuilder,
-                       ChatMemory chatMemory,
+                       SessionService sessionService,
                        OrderTool orderTools,
                        ToolCallingManager toolCallingManager) {
         this.chatClient = chatClientBuilder
-                .defaultAdvisors(
-                        SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultAdvisors(SessionAdvisors.builder(sessionService).build())
                 .defaultAdvisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
                 .defaultSystem(SYSTEM_PROMPT)
                 .build();
@@ -64,7 +63,7 @@ public class ChatService {
         var prompt = new Prompt(new UserMessage(message), chatOptions);
 
         var response = chatClient.prompt(prompt)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .advisors(SessionAdvisors.session(conversationId.toString()))
                 .call()
                 .chatClientResponse();
 
@@ -90,7 +89,7 @@ public class ChatService {
         var chatOptions = ToolCallingChatOptions.builder().toolCallbacks(toolCallbacks).build();
         var promptWithToolResult = new Prompt(toolResult.conversationHistory().getLast(), chatOptions);
         var response = chatClient.prompt(promptWithToolResult)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId.toString()))
+                .advisors(SessionAdvisors.session(conversationId.toString()))
                 .call()
                 .chatClientResponse();
 

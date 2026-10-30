@@ -3,6 +3,8 @@ package com.thorben.janssen.spring.ai.tools;
 import com.thorben.janssen.spring.ai.tools.order.AvailabilityCheckInput;
 import com.thorben.janssen.spring.ai.tools.order.ProductAvailabiltyCheck;
 import com.thorben.janssen.spring.ai.tools.order.ProductTool;
+import org.springframework.ai.session.InMemorySessionRepository;
+import org.springframework.ai.session.SessionRepository;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.function.FunctionToolCallback;
@@ -56,6 +58,11 @@ public class Config {
     @Bean
     VectorStore vectorStore(EmbeddingModel embeddingModel) {
         return SimpleVectorStore.builder(embeddingModel).build();
+    }
+
+    @Bean
+    SessionRepository sessionRepository() {
+        return InMemorySessionRepository.builder().build();
     }
 
 }

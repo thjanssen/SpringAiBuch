@@ -5,6 +5,8 @@ import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.client.transport.customizer.McpSyncHttpClientRequestCustomizer;
 import io.modelcontextprotocol.spec.McpSchema;
 import org.springaicommunity.mcp.security.client.sync.oauth2.http.client.OAuth2AuthorizationCodeSyncHttpRequestCustomizer;
+import org.springframework.ai.session.InMemorySessionRepository;
+import org.springframework.ai.session.SessionRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -23,4 +25,10 @@ public class McpClientConfiguration {
         return args -> clients.forEach(client ->
                 client.setLoggingLevel(McpSchema.LoggingLevel.DEBUG));
     }
+
+    @Bean
+    SessionRepository sessionRepository() {
+        return InMemorySessionRepository.builder().build();
+    }
+
 }
